@@ -1,0 +1,20 @@
+<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="fileName">File Name:</label>
+    <input id="fileName" formControlName="fileName" type="text" />
+  </div>
+  <div>
+    <label for="photoAlbumId">Photo Album ID:</label>
+    <input id="photoAlbumId" formControlName="photoAlbumId" type="number" />
+  </div>
+  <div>
+    <label for="photo">Photo:</label>
+    <input
+      id="photo"
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="image/*"
+    />
+  </div>
+  <button type="submit" [disabled]="uploadForm.invalid">Upload</button>
+</form>
