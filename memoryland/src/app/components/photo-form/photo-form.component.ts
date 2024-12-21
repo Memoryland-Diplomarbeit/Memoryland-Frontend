@@ -3,13 +3,12 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {PhotoService} from '../../services/photo.service';
 
 @Component({
-  selector: 'app-photo-form',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
-  templateUrl: './photo-form.component.html',
-  styleUrl: './photo-form.component.css'
+    selector: 'app-photo-form',
+    imports: [
+        ReactiveFormsModule
+    ],
+    templateUrl: './photo-form.component.html',
+    styleUrl: './photo-form.component.css'
 })
 export class PhotoFormComponent {
   protected uploadForm: FormGroup;
