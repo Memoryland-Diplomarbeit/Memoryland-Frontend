@@ -10,4 +10,5 @@ import {PhotoFormComponent} from './components/photo-form/photo-form.component';
     styleUrl: './app.component.css'
 })
 export class AppComponent {
+  protected title: string = 'Memoryland';
 }
