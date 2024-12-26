@@ -1,14 +1,18 @@
-import { Component } from '@angular/core';
-import {PhotoFormComponent} from './components/photo-form/photo-form.component';
+import {Component, inject} from '@angular/core';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
     selector: 'app-root',
-    imports: [
-        PhotoFormComponent
-    ],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet
+  ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
 })
 export class AppComponent {
   protected title: string = 'Memoryland';
+  protected location = inject(Location);
 }
