@@ -17,4 +17,17 @@ export class WebApiService {
         photoData
       );
   }
+
+  //region authentication and authorization
+
+
+  public getProfile() {
+    this.httpClient
+      .get(environment.apiConfig.uri)
+      .subscribe((profile) => {
+      console.log(profile) //TODO: return this
+    });
+  }
+
+  //endregion
 }
