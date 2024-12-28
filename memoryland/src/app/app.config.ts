@@ -11,7 +11,7 @@ import {
   LogLevel,
   PublicClientApplication
 } from '@azure/msal-browser';
-import {environment} from '../environments/environment';
+import {environment} from '../environment/environment';
 import {
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuard,

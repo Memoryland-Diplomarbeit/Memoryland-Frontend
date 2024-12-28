@@ -1,3 +1,6 @@
 # idea
 **/.idea
 
+# environment files containing sensitive information
+**/environment/**
+!**/environment/environment-structure.ts
