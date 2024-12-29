@@ -7,10 +7,13 @@ import {WebApiService} from '../../../services/web-api.service';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
+
+
 export class ProfileComponent implements OnInit {
-  private webApi = inject(WebApiService);
+  protected webApi = inject(WebApiService);
 
   ngOnInit() {
     this.webApi.getProfile();
   }
+
 }

@@ -16,6 +16,6 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [MsalGuard]
+    /*canActivate: [MsalGuard]*/
   }
 ];

@@ -11,6 +11,7 @@ import {AuthenticationResult, EventMessage, EventType, InteractionStatus} from '
 })
 export class HomeComponent implements OnInit{
   protected loginDisplay: boolean = false;
+  protected loginName: string = "none";
 
   private authService = inject(MsalService);
   private msalBroadcastService = inject(MsalBroadcastService);
@@ -26,6 +27,13 @@ export class HomeComponent implements OnInit{
         this.authService
           .instance
           .setActiveAccount(payload.account);
+        console.log(payload);
+        if (payload.account.name) {
+          this.loginName = payload.account.name;
+        }
+        else {
+          this.loginName = "none";
+        }
       });
 
     this.msalBroadcastService.inProgress$
@@ -43,5 +51,8 @@ export class HomeComponent implements OnInit{
       .instance
       .getAllAccounts()
       .length > 0;
+    if (!this.loginDisplay) {
+      this.loginName = "none";
+    }
   }
 }

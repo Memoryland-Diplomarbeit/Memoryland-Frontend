@@ -1,9 +1,18 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi} from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withFetch,
+  withInterceptorsFromDi
+} from '@angular/common/http';
 import {
   BrowserCacheLocation,
   InteractionType,
@@ -11,45 +20,19 @@ import {
   LogLevel,
   PublicClientApplication
 } from '@azure/msal-browser';
-import {environment} from '../environment/environment';
 import {
-  MSAL_GUARD_CONFIG,
-  MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuard,
-  MsalGuardConfiguration,
   MsalInterceptor,
-  MsalInterceptorConfiguration, MsalService
+  MSAL_INSTANCE,
+  MsalInterceptorConfiguration,
+  MsalGuardConfiguration,
+  MSAL_GUARD_CONFIG,
+  MSAL_INTERCEPTOR_CONFIG,
+  MsalService,
+  MsalGuard,
+  MsalBroadcastService,
 } from '@azure/msal-angular';
+import {environment} from '../environment/environment';
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideClientHydration(),
-    provideHttpClient(withInterceptorsFromDi(), withFetch()),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    },
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory,
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory,
-    },
-    MsalService,
-    MsalGuard,
-    MsalBroadcastService
-  ]
-};
-
-//region Configure MSAL
 
 export function loggerCallback(logLevel: LogLevel, message: string) {
   console.log(message);
@@ -87,7 +70,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
 
   return {
     interactionType: InteractionType.Redirect,
-    protectedResourceMap,
+    protectedResourceMap
   };
 }
 
@@ -101,4 +84,35 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 
-//endregion
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    importProvidersFrom(
+      BrowserModule
+    ),
+//    provideClientHydration(),
+    provideNoopAnimations(),
+    provideHttpClient(withInterceptorsFromDi(), withFetch()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true,
+    },
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory,
+    },
+    {
+      provide: MSAL_GUARD_CONFIG,
+      useFactory: MSALGuardConfigFactory,
+    },
+    {
+      provide: MSAL_INTERCEPTOR_CONFIG,
+      useFactory: MSALInterceptorConfigFactory,
+    },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService
+  ]
+};

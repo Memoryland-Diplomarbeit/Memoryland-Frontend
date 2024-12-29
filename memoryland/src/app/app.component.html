@@ -36,19 +36,20 @@
       <button
         type="button"
         class="btn btn-secondary"
-        [class.active]="location.path() === '/profile'"
-        routerLink="profile">
+        (click)="editProfile()">
         Profil
       </button>
 
-      @if (loggedIn) {
+      @if (!loggedIn) {
         <button
+          type="button"
           class="btn btn-light"
           (click)="login()">
           Login
         </button>
       } @else {
         <button
+          type="button"
           class="btn btn-light"
           (click)="logout()">
           Logout

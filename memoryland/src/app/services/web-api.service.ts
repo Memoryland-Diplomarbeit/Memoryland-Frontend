@@ -10,6 +10,8 @@ export class WebApiService {
   private headers: HttpHeaders = new HttpHeaders()
     .set('Accept', 'application/json');
 
+  public profile:any = undefined;
+
   public uploadPhoto(photoData: FormData) {
     return this.httpClient
       .post(
@@ -20,13 +22,21 @@ export class WebApiService {
 
   //region authentication and authorization
 
+  public getProfile(){
 
-  public getProfile() {
+    let me = this;
     this.httpClient
-      .get(environment.apiConfig.uri)
-      .subscribe((profile) => {
-      console.log(profile) //TODO: return this
-    });
+      .get(environment.apiConfig.uri+"/hello")
+      .subscribe({
+        next(profile) {
+          console.log(profile);
+          me.profile = profile;
+        },
+        error(error) {
+          console.error("hier");
+          console.error(error);
+        }
+      });
   }
 
   //endregion
