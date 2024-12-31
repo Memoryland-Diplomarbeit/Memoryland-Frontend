@@ -1,12 +1,10 @@
 import {
   ApplicationConfig,
-  importProvidersFrom,
   provideZoneChangeDetection
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {BrowserModule, provideClientHydration} from '@angular/platform-browser';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
@@ -88,9 +86,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    importProvidersFrom(
-      BrowserModule
-    ),
     provideClientHydration(),
     provideHttpClient(withInterceptorsFromDi(), withFetch()),
     {
