@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, provideClientHydration} from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import {
   HTTP_INTERCEPTORS,
@@ -91,8 +91,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       BrowserModule
     ),
-//    provideClientHydration(),
-    provideNoopAnimations(),
+    provideClientHydration(),
     provideHttpClient(withInterceptorsFromDi(), withFetch()),
     {
       provide: HTTP_INTERCEPTORS,
