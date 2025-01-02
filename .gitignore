@@ -4,3 +4,6 @@
 # environment files containing sensitive information
 **/environments/**
 !**/environments/environment-structure.ts
+
+# memoryland-old
+**/memoryland-old
