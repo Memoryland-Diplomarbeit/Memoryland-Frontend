@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PhotoFormComponent } from './photo-form.component';
+import { MainPageComponent } from './main-page.component';
 
-describe('PhotoFormComponent', () => {
-  let component: PhotoFormComponent;
-  let fixture: ComponentFixture<PhotoFormComponent>;
+describe('MainPageComponent', () => {
+  let component: MainPageComponent;
+  let fixture: ComponentFixture<MainPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PhotoFormComponent]
+      imports: [MainPageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PhotoFormComponent);
+    fixture = TestBed.createComponent(MainPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

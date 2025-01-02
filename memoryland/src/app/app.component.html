@@ -1,64 +1,7 @@
 <header>
-  <nav
-    class="navbar navbar-expand bg-primary"
-    data-bs-theme="dark">
-    <div class="container-fluid">
-      <!--title-->
-      <a class="navbar-brand fw-bold" routerLink="/">{{title}}</a>
-
-      <!--routes-->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!--Home-->
-        <li class="nav-item"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link"
-             [class.active]="location.path() === ''"
-             routerLink="/">
-            Home
-          </a>
-        </li>
-        <!--Login-Failed-->
-        <li class="nav-item"
-            routerLinkActive="active">
-          <a class="nav-link"
-             [class.active]="location.path() === '/login-failed'"
-             routerLink="login-failed">
-            Login-Failed
-          </a>
-        </li>
-      </ul>
-
-    </div>
-
-    <!--profile-->
-    <form class="container-fluid justify-content-end">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="editProfile()">
-        Profil
-      </button>
-
-      @if (!loggedIn) {
-        <button
-          type="button"
-          class="btn btn-light"
-          (click)="login()">
-          Login
-        </button>
-      } @else {
-        <button
-          type="button"
-          class="btn btn-light"
-          (click)="logout()">
-          Logout
-        </button>
-      }
-    </form>
-  </nav>
+    <app-header></app-header>
 </header>
 
 <main class="container-fluid">
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </main>
