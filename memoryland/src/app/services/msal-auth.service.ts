@@ -39,7 +39,6 @@ export class MsalAuthService implements OnDestroy {
   }
 
   async initialize(): Promise<void> {
-    console.error("ngOnInit");
     this.authService.handleRedirectObservable().subscribe();
     this.setLoggedIn();
 
@@ -48,7 +47,6 @@ export class MsalAuthService implements OnDestroy {
     // events emitted when a user logs in or out of
     // another tab or window
 
-    //region Account added or removed event
     this.msalBroadcastService.msalSubject$
       .pipe(
         filter(
@@ -57,77 +55,97 @@ export class MsalAuthService implements OnDestroy {
             msg.eventType === EventType.ACCOUNT_REMOVED
         )
       )
-      .subscribe((result: EventMessage) => {
+      .subscribe(() => {
         this.setLoggedIn();
         if (!this.loggedIn) {
           window.location.pathname = '/';
         }
       });
-    //endregion
 
-    //region In progress event -> check and set active account
+    //In progress event -> check and set active account
     this.msalBroadcastService.inProgress$
       .pipe(
         filter(
-          (status: InteractionStatus) => status === InteractionStatus.None
+          (status: InteractionStatus) =>
+            status === InteractionStatus.None
         ),
         takeUntil(this._destroying$)
       )
       .subscribe(() => {
-        console.debug(`check and set active account`);
         this.checkAndSetActiveAccount();
         this.setLoggedIn();
       });
-    //endregion
 
     this.msalBroadcastService.msalSubject$
       .pipe(
-        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_FAILURE || msg.eventType === EventType.ACQUIRE_TOKEN_FAILURE),
+        filter((msg: EventMessage) =>
+          msg.eventType === EventType.LOGIN_FAILURE ||
+          msg.eventType === EventType.ACQUIRE_TOKEN_FAILURE
+        ),
         takeUntil(this._destroying$)
       )
       .subscribe((result: EventMessage) => {
-        // Check for forgot password error
-        // Learn more about AAD error codes at https://docs.microsoft.com/en-us/azure/active-directory/develop/reference-aadsts-error-codes
         console.error(`login failed: ${result}`);
         this.setLoggedIn();
       });
 
     this.msalBroadcastService.msalSubject$
       .pipe(
-        filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS
-          || msg.eventType === EventType.ACQUIRE_TOKEN_SUCCESS
-          || msg.eventType === EventType.SSO_SILENT_SUCCESS),
+        filter((msg: EventMessage) =>
+          msg.eventType === EventType.LOGIN_SUCCESS ||
+          msg.eventType === EventType.ACQUIRE_TOKEN_SUCCESS ||
+          msg.eventType === EventType.SSO_SILENT_SUCCESS
+        ),
         takeUntil(this._destroying$)
       )
       .subscribe((result: EventMessage) => {
+        let payload = result
+          .payload as AuthenticationResult;
+        let idTokenClaims = payload
+          .idTokenClaims as IdTokenClaimsWithPolicyId;
 
-        console.error("login success");
-        let payload = result.payload as AuthenticationResult;
-        let idtoken = payload.idTokenClaims as IdTokenClaimsWithPolicyId;
-
-        if (idtoken.acr === environment.b2cPolicies.names.signUpSignIn || idtoken.tfp === environment.b2cPolicies.names.signUpSignIn) {
-          this.authService.instance.setActiveAccount(payload.account);
+        if (
+          idTokenClaims.acr === environment.b2cPolicies
+            .names
+            .signUpSignIn ||
+          idTokenClaims.tfp === environment.b2cPolicies
+            .names
+            .signUpSignIn) {
+          this.authService.instance
+            .setActiveAccount(payload.account);
         }
 
-        /**
-         * For the purpose of setting an active account for UI update, we want to consider only the auth response resulting
-         * from SUSI flow. "acr" claim in the id token tells us the policy (NOTE: newer policies may use the "tfp" claim instead).
-         * To learn more about B2C tokens, visit https://docs.microsoft.com/en-us/azure/active-directory-b2c/tokens-overview
-         */
-
-        if (idtoken.acr === environment.b2cPolicies.names.editProfile || idtoken.tfp === environment.b2cPolicies.names.editProfile) {
-
-          // retrieve the account from initial sing-in to the app
-          const originalSignInAccount = this.authService.instance.getAllAccounts()
+        if (
+          idTokenClaims.acr === environment.b2cPolicies
+            .names
+            .editProfile ||
+          idTokenClaims.tfp === environment.b2cPolicies
+            .names
+            .editProfile) {
+          // retrieve the account from initial sign-in to the app
+          const originalSignInAccount = this.authService
+            .instance
+            .getAllAccounts()
             .find((account: AccountInfo) =>
-              account.idTokenClaims?.oid === idtoken.oid
-              && account.idTokenClaims?.sub === idtoken.sub
-              && ((account.idTokenClaims as IdTokenClaimsWithPolicyId).acr === environment.b2cPolicies.names.signUpSignIn
-                || (account.idTokenClaims as IdTokenClaimsWithPolicyId).tfp === environment.b2cPolicies.names.signUpSignIn)
+              account.idTokenClaims?.oid === idTokenClaims.oid &&
+              account.idTokenClaims?.sub === idTokenClaims.sub &&
+              (
+                (account.idTokenClaims as IdTokenClaimsWithPolicyId)
+                  .acr === environment.b2cPolicies
+                  .names
+                  .signUpSignIn ||
+                (account.idTokenClaims as IdTokenClaimsWithPolicyId)
+                  .tfp === environment.b2cPolicies
+                  .names
+                  .signUpSignIn
+              )
             );
 
           let signUpSignInFlowRequest: SsoSilentRequest = {
-            authority: environment.b2cPolicies.authorities.signUpSignIn.authority,
+            authority: environment.b2cPolicies
+              .authorities
+              .signUpSignIn
+              .authority,
             account: originalSignInAccount
           };
 
@@ -140,7 +158,6 @@ export class MsalAuthService implements OnDestroy {
       });
 
   }
-
 
   private setLoggedIn() {
     this.loggedIn = this.authService
