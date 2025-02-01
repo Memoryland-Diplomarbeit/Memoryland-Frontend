@@ -39,6 +39,15 @@
                         All Worlds
                     </a>
                 </li>
+                <!--Memory-Store-->
+                <li class="nav-item"
+                    routerLinkActive="active">
+                    <a class="nav-link"
+                       [class.active]="location.path() === '/memoryStore'"
+                       routerLink="memoryStore">
+                        Memory Store
+                    </a>
+                </li>
             </ul>
         </div>
 

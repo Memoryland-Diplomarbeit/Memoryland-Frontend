@@ -7,6 +7,7 @@ import {HelpPageComponent} from './components/Basic/help-page/help-page.componen
 import {PageNotFoundComponent} from './components/Basic/page-not-found/page-not-found.component';
 import {LoginFailedComponent} from "./components/Authentication-Authorization/login-failed/login-failed.component";
 import {MsalGuard} from "@azure/msal-angular";
+import {MemoryStorePageComponent} from './components/MemoryStore/memory-store-page/memory-store-page.component';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,12 @@ export const routes: Routes = [
     path: 'exploreWorlds',
     component: ExploreWorldsPageComponent,
     title: 'Use copied links'
+  },
+  {
+    path: 'memoryStore',
+    component: MemoryStorePageComponent,
+    title: 'All photo albums of user',
+    canActivate: [MsalGuard]
   },
   {
     path: 'helpPage',
