@@ -1,4 +1,4 @@
-import {Inject, Injectable, OnDestroy, OnInit} from '@angular/core';
+import {Inject, Injectable, OnDestroy} from '@angular/core';
 import {filter, Subject, takeUntil} from 'rxjs';
 import {
   MSAL_GUARD_CONFIG,
