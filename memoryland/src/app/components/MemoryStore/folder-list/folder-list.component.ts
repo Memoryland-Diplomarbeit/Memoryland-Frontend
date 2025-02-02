@@ -11,4 +11,6 @@ export class FolderListComponent {
   deleteAlbum() {
 
   }
+
+  protected folders = [...Array(100).keys()];
 }

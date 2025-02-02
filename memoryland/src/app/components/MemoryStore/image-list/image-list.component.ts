@@ -11,4 +11,6 @@ export class ImageListComponent {
   deleteImage() {
 
   }
+
+  protected images = [...Array(100).keys()];
 }

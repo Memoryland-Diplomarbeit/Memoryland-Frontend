@@ -13,7 +13,15 @@ import {ImageListComponent} from '../image-list/image-list.component';
 })
 export class MemoryStorePageComponent {
 
-  createAlbum() {
+  protected createAlbum() {
+
+  }
+
+  protected uploadPhoto() {
+
+  }
+
+  protected uploadAlbum() {
 
   }
 }
