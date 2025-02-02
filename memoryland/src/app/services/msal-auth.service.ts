@@ -38,7 +38,9 @@ export class MsalAuthService implements OnDestroy {
     this._destroying$.complete();
   }
 
-  async initialize(): Promise<void> {
+  async initialize(
+    loginFunc: () => void,
+    logoutFunc: () => void): Promise<void> {
     this.authService.handleRedirectObservable().subscribe();
     this.setLoggedIn();
 
@@ -115,48 +117,33 @@ export class MsalAuthService implements OnDestroy {
             .setActiveAccount(payload.account);
         }
 
-        if (
-          idTokenClaims.acr === environment.b2cPolicies
-            .names
-            .editProfile ||
-          idTokenClaims.tfp === environment.b2cPolicies
-            .names
-            .editProfile) {
-          // retrieve the account from initial sign-in to the app
-          const originalSignInAccount = this.authService
-            .instance
-            .getAllAccounts()
-            .find((account: AccountInfo) =>
-              account.idTokenClaims?.oid === idTokenClaims.oid &&
-              account.idTokenClaims?.sub === idTokenClaims.sub &&
-              (
-                (account.idTokenClaims as IdTokenClaimsWithPolicyId)
-                  .acr === environment.b2cPolicies
-                  .names
-                  .signUpSignIn ||
-                (account.idTokenClaims as IdTokenClaimsWithPolicyId)
-                  .tfp === environment.b2cPolicies
-                  .names
-                  .signUpSignIn
-              )
-            );
-
-          let signUpSignInFlowRequest: SsoSilentRequest = {
-            authority: environment.b2cPolicies
-              .authorities
-              .signUpSignIn
-              .authority,
-            account: originalSignInAccount
-          };
-
-          // silently login again with the signUpSignIn policy
-          this.authService.ssoSilent(signUpSignInFlowRequest);
-        }
-
         this.setLoggedIn();
         return result;
       });
 
+    this.msalBroadcastService.msalSubject$
+      .pipe(
+        filter((msg: EventMessage) =>
+          msg.eventType === EventType.LOGIN_SUCCESS ||
+          msg.eventType === EventType.LOGOUT_END
+        ),
+        takeUntil(this._destroying$)
+      )
+      .subscribe(() => {
+        this.setLoggedIn();
+
+        if (this.loggedIn) {
+          loginFunc();
+        } else {
+          logoutFunc();
+        }
+      });
+
+    if (this.loggedIn) {
+      loginFunc();
+    } else {
+      logoutFunc();
+    }
   }
 
   private setLoggedIn() {
