@@ -1,1 +1,31 @@
-<p>memory-store-page works!</p>
+<div class="d-flex">
+  <div class="h-100 sidebar bg-body-tertiary">
+    <div class="p-3">
+      <h4>Meine Foto-Alben</h4>
+      <button
+        class="btn btn-light"
+        (click)="createAlbum()">
+        Album Erstellen
+      </button>
+      <button
+        class="btn btn-light"
+        (click)="createAlbum()">
+        Upload Foto
+      </button>
+      <button
+        class="btn btn-light"
+        (click)="createAlbum()">
+        Upload Album
+      </button>
+    </div>
+  </div>
+
+  <div class="body d-flex">
+    <div class="folder-column p-3">
+      <app-folder-list></app-folder-list>
+    </div>
+    <div class="image-column p-3">
+      <app-image-list></app-image-list>
+    </div>
+  </div>
+</div>
