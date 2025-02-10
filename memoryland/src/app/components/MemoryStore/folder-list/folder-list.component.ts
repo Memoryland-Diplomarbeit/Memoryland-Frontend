@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {store} from '../../../model';
+import {PhotoAlbum, set, store} from '../../../model';
 import {distinctUntilChanged, map} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 
@@ -21,4 +21,12 @@ export class FolderListComponent {
     map(model => model.photoAlbums),
     distinctUntilChanged()
   );
+
+  selectAlbum(f: PhotoAlbum) {
+    set(model => {
+      model.selectedPhotoAlbum = f;
+    });
+  }
+
+  protected readonly store = store;
 }

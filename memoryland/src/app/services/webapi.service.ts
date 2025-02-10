@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {PhotoAlbum} from '../model/entity/MemoryStore/PhotoAlbum';
+import {PhotoAlbum} from '../model';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
@@ -13,7 +13,7 @@ export class WebapiService {
   private headers: HttpHeaders = new HttpHeaders()
     .set('Accept', 'application/json');
 
-  public getPhotoDataFromServer(): void {
+  public getPhotoAlbumsFromServer(): void {
     this.httpClient.get<PhotoAlbum[]>(
       `${environment.apiConfig.uri}/api/PhotoAlbum`,
       {headers: this.headers})

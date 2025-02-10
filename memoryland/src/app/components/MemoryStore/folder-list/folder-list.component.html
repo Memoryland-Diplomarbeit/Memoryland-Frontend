@@ -7,12 +7,21 @@
   Alben
 </div>
 
+@if ((folders | async)?.length === 0) {
+  <div class="fs-5 text-center text-muted">
+    Keine Alben vorhanden
+  </div>
+}
+
 <div class="overflow-scroll memory-store-height">
   <table class="table table-striped">
     <tbody>
       @for (f of (folders | async); track f.id) {
-        <tr>
-          <td class="col">
+        <tr [class.table-secondary]="store.value.selectedPhotoAlbum?.id === f.id">
+          <td
+            class="col"
+            type="button"
+            (click)="selectAlbum(f)">
             <div class="overflow-name">
               {{f.name}}
             </div>

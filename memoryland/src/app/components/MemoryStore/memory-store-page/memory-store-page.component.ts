@@ -31,6 +31,7 @@ export class MemoryStorePageComponent {
               'success'
             );
             this.setAlbumName('');
+            this.webApi.getPhotoAlbumsFromServer();
           },
           "error": (err: HttpErrorResponse) => {
             this.toastSvc.addToast(

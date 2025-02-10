@@ -29,7 +29,7 @@ export class AppComponent implements OnInit{
   async ngOnInit() {
     await this.msalAuthSvc.initialize(
       () => {
-        this.webApi.getPhotoDataFromServer();
+        this.webApi.getPhotoAlbumsFromServer();
       },
       () => {
         set(model => {
