@@ -5,6 +5,7 @@ import {MsalAuthService} from "./services/msal-auth.service";
 import {CommonModule, Location} from "@angular/common";
 import {set} from './model';
 import {WebapiService} from './services/webapi.service';
+import {ToastComponent} from './components/toast/toast.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import {WebapiService} from './services/webapi.service';
     RouterOutlet,
     RouterOutlet,
     RouterLinkActive,
-    RouterLink
+    RouterLink,
+    ToastComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

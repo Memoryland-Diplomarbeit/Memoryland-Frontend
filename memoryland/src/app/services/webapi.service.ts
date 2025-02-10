@@ -13,7 +13,6 @@ export class WebapiService {
     .set('Accept', 'application/json');
 
   public getPhotoDataFromServer(): void {
-    console.debug('getPhotoDataFromServer');
     this.httpClient.get<PhotoAlbum[]>(
       `${environment.apiConfig.uri}/api/PhotoAlbum`,
       {headers: this.headers})
