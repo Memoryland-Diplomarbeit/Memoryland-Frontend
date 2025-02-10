@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {PhotoAlbum} from '../model/entity/MemoryStore/PhotoAlbum';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,11 @@ export class WebapiService {
         },
         "error": (err) => console.error(err),
       });
+  }
+
+  public createPhotoAlbum(albumName: string): Observable<Object> {
+    return this.httpClient.post(
+      `${environment.apiConfig.uri}/api/PhotoAlbum/${albumName}`,
+      {headers: this.headers});
   }
 }

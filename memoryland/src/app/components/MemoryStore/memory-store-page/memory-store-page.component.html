@@ -4,19 +4,22 @@
       <h4>Meine Foto-Alben</h4>
       <button
         class="btn btn-light w-100 text-start"
-        (click)="createAlbum()">
-        Album Erstellen
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#create-album-modal">
+        Album Erstellen ...
       </button>
       <button
-        class="btn btn-light w-100 text-start"
-        (click)="uploadPhoto()">
-        Upload Foto
+        class="btn btn-light w-100 text-start">
+        Upload Foto ...
       </button>
+      <!--
       <button
         class="btn btn-light w-100 text-start"
         (click)="uploadAlbum()">
-        Upload Album
+        Upload Album ...
       </button>
+      -->
     </div>
   </div>
 
@@ -26,6 +29,56 @@
     </div>
     <div class="image-column p-3">
       <app-image-list></app-image-list>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="create-album-modal"
+  tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Bitte gib den Namen des Albums ein.</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close">
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="input-group">
+          <span
+            class="input-group-text">
+            Album-Name
+          </span>
+          <input #resetText
+            type="text"
+            class="form-control"
+            [value]="store.value.createAlbumName"
+            (keyup)="setAlbumName(resetText.value)">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button
+          (click)="createAlbum()"
+          class="btn btn-success"
+          [disabled]="albumNameNotValid()"
+          data-bs-dismiss="modal">
+          Album erstellen
+        </button>
+      </div>
     </div>
   </div>
 </div>
