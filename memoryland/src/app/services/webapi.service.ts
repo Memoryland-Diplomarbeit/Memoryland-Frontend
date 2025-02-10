@@ -20,7 +20,7 @@ export class WebapiService {
       .subscribe({
         "next": (photoAlbums) => {
           set((model) => {
-            console.debug('photoAlbums', photoAlbums);
+            model.photoAlbums = photoAlbums;
           });
         },
         "error": (err) => console.error(err),

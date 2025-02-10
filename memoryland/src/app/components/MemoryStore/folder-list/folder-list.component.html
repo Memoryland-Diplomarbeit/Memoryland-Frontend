@@ -10,11 +10,11 @@
 <div class="overflow-scroll memory-store-height">
   <table class="table table-striped">
     <tbody>
-      @for (i of folders; track i) {
+      @for (f of (folders | async); track f.id) {
         <tr>
           <td class="col">
             <div class="overflow-name">
-              Folder-name {{i}}
+              {{f.name}}
             </div>
           </td>
           <td class="text-end text-danger col">
