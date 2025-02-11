@@ -22,11 +22,11 @@
   <div class="memory-store-height overflow-scroll">
     <table class="table table-striped">
       <tbody>
-        @for (i of (images | async); track i) {
+        @for (i of (images | async); track i.id) {
           <tr>
             <td class="col">
               <div class="overflow-name">
-                Image-name {{i}}
+                {{i.name}}
               </div>
             </td>
             <td class="text-end text-danger col">
