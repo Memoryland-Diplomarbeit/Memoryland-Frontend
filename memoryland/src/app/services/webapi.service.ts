@@ -21,6 +21,12 @@ export class WebapiService {
         "next": (photoAlbums) => {
           set((model) => {
             model.photoAlbums = photoAlbums;
+
+            if (model.selectedPhotoAlbum !== undefined) {
+              model.selectedPhotoAlbum = photoAlbums
+                .filter(pa =>
+                  pa.id === model.selectedPhotoAlbum!.id)[0];
+            }
           });
         },
         "error": (err) => console.error(err),
@@ -31,5 +37,14 @@ export class WebapiService {
     return this.httpClient.post(
       `${environment.apiConfig.uri}/api/PhotoAlbum/${albumName}`,
       {headers: this.headers});
+  }
+
+  uploadPhoto(formData: FormData): Observable<Object>  {
+    return this.httpClient
+      .post(
+        `${environment.apiConfig.uri}/api/upload/photo`,
+        formData,
+        {headers: this.headers}
+      );
   }
 }

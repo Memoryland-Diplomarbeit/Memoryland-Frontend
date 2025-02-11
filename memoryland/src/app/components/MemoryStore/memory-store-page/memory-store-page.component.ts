@@ -1,55 +1,46 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FolderListComponent} from '../folder-list/folder-list.component';
 import {ImageListComponent} from '../image-list/image-list.component';
 import {set, store} from '../../../model';
-import {WebapiService} from '../../../services/webapi.service';
-import {ToastService} from '../../../services/toast.service';
-import {HttpErrorResponse} from '@angular/common/http';
+import {distinctUntilChanged, map} from 'rxjs';
+import {MemoryStoreService} from '../../../services/memory-store.service';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'app-memory-store-page',
   imports: [
     FolderListComponent,
-    ImageListComponent
+    ImageListComponent,
+    AsyncPipe
   ],
   templateUrl: './memory-store-page.component.html',
   styleUrl: './memory-store-page.component.css'
 })
-export class MemoryStorePageComponent {
-  protected readonly webApi = inject(WebapiService);
-  protected readonly toastSvc = inject(ToastService);
-  protected readonly reservedChars: string = '!*\'();:@&=+$,/?#[]';
+export class MemoryStorePageComponent implements OnInit{
+  protected readonly memoryStoreSvc = inject(MemoryStoreService);
+  protected readonly store = store;
+  protected readonly photoAlbums = store
+    .pipe(
+      map(model => model.photoAlbums),
+      distinctUntilChanged()
+    );
+  protected readonly uploadPhotoPhotoAlbumIndex = store
+    .pipe(
+      map(model => model.photoAlbums
+        .findIndex(pa =>
+          pa.id === store.value.uploadPhotoModel.selectedAlbumId)),
+      distinctUntilChanged()
+    );
 
-  protected createAlbum() {
-    if (!this.albumNameNotValid()) {
-      this.webApi.createPhotoAlbum(store.value.createAlbumName)
-        .subscribe({
-          "next": (obj) => {
-            this.toastSvc.addToast(
-              'Album erstellt!',
-              `Das Album ${store.value.createAlbumName} wurde erfolgreich erstellt!`,
-              'success'
-            );
-            this.setAlbumName('');
-            this.webApi.getPhotoAlbumsFromServer();
-          },
-          "error": (err: HttpErrorResponse) => {
-            this.toastSvc.addToast(
-              'Fehler beim erstellen des Albums!',
-              err.error,
-              'error'
-            );
-          },
+  ngOnInit() {
+    this.photoAlbums.subscribe(p => {
+      if (store.value.uploadPhotoModel.selectedAlbumId === undefined &&
+        p.length > 0) {
+        set(model => {
+          model.uploadPhotoModel.selectedAlbumId = p[0].id;
         });
-    }
-  }
-
-  protected uploadPhoto() {
-
-  }
-
-  protected uploadAlbum() {
-
+      }
+    });
   }
 
   setAlbumName(val: string) {
@@ -58,19 +49,31 @@ export class MemoryStorePageComponent {
     });
   }
 
-  albumNameNotValid(): boolean {
-    return store.value.createAlbumName === '' ||
-      store.value.createAlbumName.length > 1024 ||
-      this.containsAnyCharRegex(
-        store.value.createAlbumName,
-        this.reservedChars);
+  setFileName(val: string) {
+    set(model => {
+      model.uploadPhotoModel.fileName = val;
+    });
   }
 
-  containsAnyCharRegex(source: string, chars: string): boolean {
-    return chars
-      .split('')
-      .some(char => source.includes(char));
+  setAlbum(val: string) {
+    const id = Number.parseInt(val);
+
+    if (!Number.isNaN(id)) {
+      set(model => {
+        model.uploadPhotoModel.selectedAlbumId = id;
+      });
+    }
   }
 
-  protected readonly store = store;
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+
+    if (file) {
+      set(model => {
+        model.uploadPhotoModel.file = file;
+        model.uploadPhotoModel.fileName = file.name;
+      });
+    }
+  }
+
 }

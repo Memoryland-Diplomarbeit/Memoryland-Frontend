@@ -10,8 +10,11 @@
         Album Erstellen ...
       </button>
       <button
-        class="btn btn-light w-100 text-start">
-        Upload Foto ...
+        class="btn btn-light w-100 text-start"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#upload-photo-modal">
+        Foto hochladen ...
       </button>
       <!--
       <button
@@ -72,13 +75,90 @@
         </button>
 
         <button
-          (click)="createAlbum()"
+          (click)="memoryStoreSvc.createAlbum()"
           class="btn btn-success"
-          [disabled]="albumNameNotValid()"
+          [disabled]="memoryStoreSvc.albumNameNotValid()"
           data-bs-dismiss="modal">
           Album erstellen
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="upload-photo-modal"
+  tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Foto hochladen</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close">
+        </button>
+      </div>
+
+      <form>
+        <div class="modal-body">
+          <!-- album selection -->
+          <div class="mb-3">
+            <label class="form-label">Album auswählen</label>
+            <select #albumSelect
+              class="form-select"
+              (change)="setAlbum(albumSelect.value)"
+              name="selectedAlbum"
+              required
+              [selectedIndex]="(uploadPhotoPhotoAlbumIndex | async)">
+              @for (pa of (photoAlbums | async); track pa.id) {
+                <option [value]="pa.id">{{ pa.name }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- file selection -->
+          <div class="mb-3">
+            <label class="form-label">Select File</label>
+            <input
+              type="file"
+              class="form-control"
+              (change)="onFileSelected($event)"
+              accept="image/*">
+          </div>
+
+          <!-- filename input -->
+          <div class="mb-3">
+            <label class="form-label">Filename angeben</label>
+            <input #fileNameText
+                   type="text"
+                   class="form-control"
+                   [value]="store.value.uploadPhotoModel.fileName"
+                   (keyup)="setFileName(fileNameText.value)"
+                   name="filename">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            [disabled]="memoryStoreSvc.uploadPhotoNotValid()"
+            (click)="memoryStoreSvc.uploadPhoto()"
+            class="btn btn-success"
+            data-bs-dismiss="modal">
+            Foto hochladen
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
