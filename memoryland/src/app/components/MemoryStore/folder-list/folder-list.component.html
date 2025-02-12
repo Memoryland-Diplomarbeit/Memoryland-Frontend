@@ -17,7 +17,10 @@
   <table class="table table-striped">
     <tbody>
       @for (f of (folders | async); track f.id) {
-        <tr [class.table-secondary]="store.value.selectedPhotoAlbum?.id === f.id">
+        <tr
+          [class.table-secondary]="store.value.selectedPhotoAlbum?.id === f.id"
+          hover-class="table-secondary"
+          [not-remove-requirement]="store.value.selectedPhotoAlbum?.id === f.id">
           <td
             class="col"
             type="button"
