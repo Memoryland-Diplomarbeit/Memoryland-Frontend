@@ -1,0 +1,62 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+//@import "../node_modules/bootstrap/scss/variables-dark";
+
+//@import "../node_modules/bootstrap/scss/mixins";
+//@import "../node_modules/bootstrap/scss/maps";
+
+$primary: purple;
+$secondary: gray;
+$success: green;
+$info: cyan;
+$warning: yellow;
+$danger: purple;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": #f00,
+  "light": #eee, //$gray-100,
+  "dark": #222, // $gray-900,
+);
+//
+//$custom-colors: (
+//  "critical": $danger,
+//);
+//
+//$theme-colors: map-merge($theme-colors, $custom-colors);
+//
+//// ------------------------------
+//// Here starts the missing stuff
+//// ------------------------------
+//
+//$critical-text-emphasis:   shade-color($danger, 60%) !default;
+//$critical-bg-subtle:       tint-color($danger, 80%) !default;
+//$critical-border-subtle:   tint-color($danger, 60%) !default;
+////
+//
+//$custom-theme-colors-text: (
+//  "critical": $critical-text-emphasis
+//);
+//$theme-colors-text: map-merge($theme-colors-text, $custom-theme-colors-text);
+//
+//$custom-theme-colors-bg-subtle: (
+//  "critical": $critical-bg-subtle
+//);
+//$theme-colors-bg-subtle: map-merge($theme-colors-bg-subtle, $custom-theme-colors-bg-subtle);
+//
+//$custom-theme-colors-border-subtle: (
+//  "critical": $critical-border-subtle
+//);
+//$theme-colors-border-subtle: map-merge($theme-colors-border-subtle, $custom-theme-colors-border-subtle);
+//
+//$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+//
+.memory-store-height {
+  height: 75vh;
+}
+
+@import "../node_modules/bootstrap/scss/bootstrap";

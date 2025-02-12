@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-login-failed',
   imports: [],
   templateUrl: './login-failed.component.html',
-  styleUrl: './login-failed.component.css'
+  styleUrl: './login-failed.component.scss'
 })
 export class LoginFailedComponent {
 

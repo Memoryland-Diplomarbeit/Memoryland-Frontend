@@ -14,7 +14,7 @@ import {AsyncPipe} from '@angular/common';
     AsyncPipe
   ],
   templateUrl: './memory-store-page.component.html',
-  styleUrl: './memory-store-page.component.css'
+  styleUrl: './memory-store-page.component.scss'
 })
 export class MemoryStorePageComponent implements OnInit{
   protected readonly memoryStoreSvc = inject(MemoryStoreService);

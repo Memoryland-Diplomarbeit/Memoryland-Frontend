@@ -19,7 +19,7 @@ import {ToastComponent} from './components/toast/toast.component';
     ToastComponent
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit{
   protected location = inject(Location);

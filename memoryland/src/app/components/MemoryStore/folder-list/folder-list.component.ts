@@ -11,7 +11,7 @@ import {HoverClassDirective} from '../../../directives/hover-class.directive';
     HoverClassDirective
   ],
   templateUrl: './folder-list.component.html',
-  styleUrl: './folder-list.component.css'
+  styleUrl: './folder-list.component.scss'
 })
 export class FolderListComponent {
 

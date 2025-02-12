@@ -9,7 +9,7 @@ import {NgClass} from '@angular/common';
     NgClass
   ],
   templateUrl: './toast.component.html',
-  styleUrl: './toast.component.css'
+  styleUrl: './toast.component.scss'
 })
 export class ToastComponent {
   protected readonly toastSvc = inject(ToastService);

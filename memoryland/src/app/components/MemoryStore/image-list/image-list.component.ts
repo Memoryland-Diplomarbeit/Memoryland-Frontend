@@ -12,7 +12,7 @@ import {WebapiService} from '../../../services/webapi.service';
     HoverClassDirective
   ],
   templateUrl: './image-list.component.html',
-  styleUrl: './image-list.component.css'
+  styleUrl: './image-list.component.scss'
 })
 export class ImageListComponent {
   protected images = store.pipe(
