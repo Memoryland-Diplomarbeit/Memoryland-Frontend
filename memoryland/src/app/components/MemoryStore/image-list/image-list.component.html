@@ -23,8 +23,13 @@
     <table class="table table-striped">
       <tbody>
         @for (i of (images | async); track i.id) {
-          <tr>
-            <td class="col">
+          <tr hover-class="table-secondary">
+            <td
+              class="col"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#photo-viewer-modal"
+              (click)="selectImage(i)">
               <div class="overflow-name">
                 {{i.name}}
               </div>
@@ -51,4 +56,44 @@
     </table>
   </div>
 
+  <div
+    class="modal fade"
+    id="photo-viewer-modal"
+    tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">
+            @if ((selectedPhoto | async) === undefined) {
+              Lädt...
+            } @else {
+              {{(selectedPhoto | async)!.name}}
+            }
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close">
+          </button>
+        </div>
+
+        <div class="modal-body d-flex justify-content-center">
+          @if ((selectedPhoto | async) === undefined) {
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          } @else {
+            <a [href]="(selectedPhoto | async)!.photo" target="_blank">
+              <img
+                class="img-fluid"
+                src="{{(selectedPhoto | async)!.photo}}"
+                alt="{{(selectedPhoto | async)!.name}}">
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 }

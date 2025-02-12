@@ -4,3 +4,8 @@
   white-space: nowrap;
   width: 40vw;
 }
+
+.photo-size {
+  max-width: 80vw;
+  max-height: 80vw;
+}

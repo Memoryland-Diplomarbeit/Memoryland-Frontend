@@ -3,6 +3,7 @@ import {Draft, produce} from "immer";
 import {PhotoAlbum} from './entity/MemoryStore/PhotoAlbum';
 import {ToastModel} from './entity/toast/toast-model';
 import {UploadPhotoModel} from './entity/MemoryStore/UploadPhotoModel';
+import {SelectedPhoto} from './entity/MemoryStore/SelectedPhoto';
 
 export interface Model {
   toastModel: ToastModel;
@@ -10,9 +11,11 @@ export interface Model {
   selectedPhotoAlbum: PhotoAlbum | undefined;
   createAlbumName: string;
   uploadPhotoModel: UploadPhotoModel;
+  photoViewerPhoto: SelectedPhoto | undefined;
 }
 
 const initialState: Model = {
+  photoViewerPhoto: undefined,
   uploadPhotoModel: {
     fileName: "",
     selectedAlbumId: undefined,

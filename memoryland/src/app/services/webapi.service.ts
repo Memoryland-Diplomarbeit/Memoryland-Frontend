@@ -1,15 +1,17 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {PhotoAlbum} from '../model';
+import {PhotoAlbum, SelectedPhoto} from '../model';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
+import {ToastService} from './toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebapiService {
   private httpClient = inject(HttpClient);
+  private toastSvc = inject(ToastService);
   private headers: HttpHeaders = new HttpHeaders()
     .set('Accept', 'application/json');
 
@@ -46,5 +48,25 @@ export class WebapiService {
         formData,
         {headers: this.headers}
       );
+  }
+
+  public getSelectedPhoto(albumId: number, photoName: string): void {
+    this.httpClient.get<SelectedPhoto>(
+      `${environment.apiConfig.uri}/api/Photo/${albumId}/${photoName}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (photo) => {
+          set((model) => {
+            model.photoViewerPhoto = photo;
+          });
+        },
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen des Fotos!',
+            err.error,
+            'error'
+          );
+        },
+      });
   }
 }

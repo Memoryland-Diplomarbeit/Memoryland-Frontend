@@ -41,6 +41,17 @@ export class MemoryStorePageComponent implements OnInit{
         });
       }
     });
+
+    this.store.pipe(
+      map(model => model.selectedPhotoAlbum),
+      distinctUntilChanged()
+    ).subscribe(p => {
+      if (p !== undefined) {
+        set(model => {
+          model.uploadPhotoModel.selectedAlbumId = p.id;
+        });
+      }
+    });
   }
 
   setAlbumName(val: string) {
