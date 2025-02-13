@@ -6,6 +6,7 @@ import {CommonModule, Location} from "@angular/common";
 import {set} from './model';
 import {WebapiService} from './services/webapi.service';
 import {ToastComponent} from './components/toast/toast.component';
+import {ToastService} from './services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit{
   protected location = inject(Location);
   protected webApi = inject(WebapiService);
   protected msalAuthSvc = inject(MsalAuthService);
+  protected toastSvc = inject(ToastService);
 
   async ngOnInit() {
     await this.msalAuthSvc.initialize(
@@ -39,6 +41,10 @@ export class AppComponent implements OnInit{
         });
       }
     );
+
+    this.toastSvc.addToast("success", "success", "success");
+    this.toastSvc.addToast("info", "info", "info");
+    this.toastSvc.addToast("error", "error", "error");
   }
 
 }
