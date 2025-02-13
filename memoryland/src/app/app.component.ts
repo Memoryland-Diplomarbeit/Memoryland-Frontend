@@ -30,6 +30,8 @@ export class AppComponent implements OnInit{
     await this.msalAuthSvc.initialize(
       () => {
         this.webApi.getPhotoAlbumsFromServer();
+        this.webApi.getMemorylandsFromServer();
+        this.webApi.getMemorylandTypesFromServer();
       },
       () => {
         set(model => {

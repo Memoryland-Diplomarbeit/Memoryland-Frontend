@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {PhotoAlbum, SelectedPhoto} from '../model';
+import {Memoryland, MemorylandType, PhotoAlbum, SelectedPhoto} from '../model';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
@@ -67,6 +67,46 @@ export class WebapiService {
             'error'
           );
         },
+      });
+  }
+
+  public getMemorylandsFromServer(): void {
+    this.httpClient.get<Memoryland[]>(
+      `${environment.apiConfig.uri}/api/Memoryland/all`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (memorylands) => {
+          set((model) => {
+            model.memorylands = memorylands;
+
+            if (model.selectedMemoryland !== undefined) {
+              model.selectedMemoryland = memorylands
+                .filter(m =>
+                  m.id === model.selectedMemoryland!.id)[0];
+            }
+          });
+        },
+        "error": (err) => console.error(err),
+      });
+  }
+
+  public getMemorylandTypesFromServer(): void {
+    this.httpClient.get<MemorylandType[]>(
+      `${environment.apiConfig.uri}/api/Memoryland/types`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (types) => {
+          set((model) => {
+            model.memorylandTypes = types;
+
+            if (model.selectedMemorylandType !== undefined) {
+              model.selectedMemorylandType = types
+                .filter(m =>
+                  m.name === model.selectedMemorylandType!.name)[0];
+            }
+          });
+        },
+        "error": (err) => console.error(err),
       });
   }
 }
