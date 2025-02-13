@@ -1,0 +1,15 @@
+.sidebar {
+  min-height: 80vh;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.body {
+  flex-grow: 1;
+}
+
+.sidebar button {
+  display: block;
+  padding: 8px;
+  border-radius: 5px;
+}

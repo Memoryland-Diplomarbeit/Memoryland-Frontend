@@ -1,0 +1,70 @@
+<div class="fs-4 fw-bold pb-3">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-journal-album"
+       viewBox="0 0 16 16">
+    <path d="M5.5 4a.5.5 0 0 0-.5.5v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5zm1 7a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/>
+    <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2"/>
+    <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z"/>
+  </svg>
+  Memorylands
+</div>
+
+@if ((memorylands | async)?.length === 0) {
+  <div class="fs-5 text-center text-muted">
+    Keine Memorylands vorhanden
+  </div>
+} @else {
+  <div class="memoryland-height overflow-scroll">
+    <table class="table table-striped">
+      <thead class="w-100">
+      <th class="w-100">
+        <div class="d-flex w-100">
+          <div class="w-50">
+            Name
+          </div>
+          <div class="w-50">
+            Typ
+          </div>
+        </div>
+      <th class="w-100"></th> <!--for white background-->
+      </thead>
+      <tbody>
+        @for (m of (memorylands | async); track m.id) {
+          <tr
+            [class.table-secondary]="store.value.selectedMemoryland?.id === m.id"
+            hover-class="table-secondary"
+            [not-remove-requirement]="store.value.selectedMemoryland?.id === m.id">
+            <td
+              class="col"
+              type="button"
+              (click)="selectMemoryland(m)">
+              <div class="d-flex">
+                <div class="w-50">
+                  {{m.name}}
+                </div>
+                <div class="w-50">
+                  {{m.memorylandType.name}} ({{m.memorylandType.photoAmount}} Photos)
+                </div>
+              </div>
+            </td>
+            <td class="text-end text-danger col">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="25"
+                height="25"
+                fill="currentColor"
+                class="bi bi-trash"
+                viewBox="0 0 16 16"
+                type="button"
+                (click)="deleteMemoryland()">
+                <path
+                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                <path
+                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+              </svg>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

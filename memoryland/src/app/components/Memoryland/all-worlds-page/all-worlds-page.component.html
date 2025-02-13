@@ -1,1 +1,70 @@
-<p>all-worlds-page works!</p>
+<div class="d-flex">
+  <div class="h-100 sidebar bg-body-tertiary">
+    <div class="p-3">
+      <h4>Meine Memories</h4>
+      <button
+        class="btn btn-light w-100 text-start"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#create-memoryland-modal">
+        Memoryland Erstellen ...
+      </button>
+    </div>
+  </div>
+
+  <div class="body d-flex">
+    <div class="w-100 p-3">
+      <app-memoryland-list></app-memoryland-list>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="create-memoryland-modal"
+  tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Bitte gib den Namen des Albums ein.</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close">
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="input-group">
+          <span
+            class="input-group-text">
+            Album-Name
+          </span>
+          <input #resetText
+                 type="text"
+                 class="form-control"
+                 [value]="store.value.createAlbumName"
+                 (keyup)="null;//setAlbumName(resetText.value)">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button
+          (click)="null//memoryStoreSvc.createAlbum()"
+          class="btn btn-success"
+          [disabled]="true//memoryStoreSvc.albumNameNotValid()"
+          data-bs-dismiss="modal">
+          Memoryland erstellen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
