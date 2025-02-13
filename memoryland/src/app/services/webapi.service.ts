@@ -161,16 +161,6 @@ export class WebapiService {
           set((model) => {
             model.token = tokenDto.token;
           });
-
-          this.httpClient.get(
-            `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}`,
-            {headers: this.headers.set('Authorization', 'Bearer ' + tokenDto.token),})
-            .subscribe({
-              "next": (obj) => {
-                console.debug(obj);
-              },
-              "error": (err) => console.error(err),
-            });
         },
         "error": (err) => console.error(err),
       });
