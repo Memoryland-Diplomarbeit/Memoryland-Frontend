@@ -3,11 +3,19 @@
     Bitte wähle ein Memoryland aus.
   </div>
 } @else {
-  <div class="ratio ratio-16x9 w-100 h-100">
-    <iframe
-      width="100%"
-      height="800"
-      [src]="'/unity/index.html?token=' + (token | async)">
-    </iframe>
-  </div>
+  @if (safeUrl === null) {
+    <div class="text-center w-100">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else {
+    <div class="ratio ratio-16x9">
+      <iframe
+        width="100%"
+        height="800"
+        [src]="safeUrl">
+      </iframe>
+    </div>
+  }
 }
