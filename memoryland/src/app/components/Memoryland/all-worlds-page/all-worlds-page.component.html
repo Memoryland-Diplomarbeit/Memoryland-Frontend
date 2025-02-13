@@ -47,8 +47,8 @@
                     name="selectedAlbum"
                     required
                     [selectedIndex]="(selectedType | async)">
-              @for (t of (memorylandTypes | async); track t.name) {
-                <option [value]="t.name">{{ t.name }}</option>
+              @for (t of (memorylandTypes | async); track t.id) {
+                <option [value]="t.id">{{ t.name }}</option>
               }
             </select>
           </div>

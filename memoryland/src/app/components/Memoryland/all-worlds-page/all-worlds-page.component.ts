@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
 import {MemorylandListComponent} from '../memoryland-list/memoryland-list.component';
 import {set, store} from '../../../model';
 import {distinctUntilChanged, map} from 'rxjs';
+import {ToastService} from '../../../services/toast.service';
+import {WebapiService} from '../../../services/webapi.service';
 
 @Component({
   selector: 'app-all-worlds-page',
@@ -15,6 +17,8 @@ import {distinctUntilChanged, map} from 'rxjs';
 })
 export class AllWorldsPageComponent implements OnInit {
   protected readonly store = store;
+  private readonly toastSvc = inject(ToastService);
+  private readonly webApi = inject(WebapiService);
 
   protected readonly memorylandTypes = store
     .pipe(
@@ -25,31 +29,35 @@ export class AllWorldsPageComponent implements OnInit {
     .pipe(
       map(model => model.memorylandTypes
         .findIndex(mt =>
-          mt.name === model.selectedMemorylandType)),
+          mt.id === model.selectedMemorylandType)),
       distinctUntilChanged()
     );
 
   ngOnInit() {
     this.memorylandTypes.subscribe(mt => {
-      if (store.value.selectedMemorylandType === "" &&
+      if (store.value.selectedMemorylandType === undefined &&
         mt.length > 0) {
         set(model => {
-          model.selectedMemorylandType = mt[0].name;
+          model.selectedMemorylandType = mt[0].id;
         });
       }
     });
 
     if (store.value.memorylandTypes.length > 0) {
       set(model => {
-        model.selectedMemorylandType = store.value.memorylandTypes[0].name;
+        model.selectedMemorylandType = store.value.memorylandTypes[0].id;
       });
     }
   }
 
   setType(val: string) {
-    set(model => {
-      model.selectedMemorylandType = val;
-    });
+    let id = Number.parseInt(val);
+
+    if (!Number.isNaN(id)) {
+      set(model => {
+        model.selectedMemorylandType = id;
+      });
+    }
   }
 
   setMemorylandName(val: string) {
@@ -60,12 +68,38 @@ export class AllWorldsPageComponent implements OnInit {
 
   createMemorylandNotValid() {
     return store.value.createMemorylandName === "" ||
-      store.value.selectedMemorylandType === ""
+      store.value.selectedMemorylandType === undefined
   }
 
   createMemoryland() {
-    console.debug("Creating memoryland");
-    console.debug(store.value.createMemorylandName);
-    console.debug(store.value.selectedMemorylandType);
+    if (store.value.selectedMemorylandType !== undefined) {
+      this.webApi
+        .createMemoryland(
+          store.value.createMemorylandName,
+          store.value.selectedMemorylandType)
+        .subscribe({
+          next: () => {
+            this.toastSvc.addToast(
+              'Memoryland erstellt!',
+              `Das Memoryland ${store.value.createMemorylandName} wurde erfolgreich erstellt!`,
+              'success'
+            );
+
+            set(model => {
+              model.uploadPhotoModel.fileName = '';
+              model.uploadPhotoModel.selectedAlbumId = undefined;
+              model.uploadPhotoModel.file = undefined;
+            });
+            this.webApi.getMemorylandsFromServer();
+          },
+          error: (err) => {
+            this.toastSvc.addToast(
+              'Fehler beim erstellen des Memorylands!',
+              err.message + ":\n" + err.error,
+              'error'
+            );
+          }
+      });
+    }
   }
 }

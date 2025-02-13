@@ -63,7 +63,7 @@ export class WebapiService {
         "error": (err) => {
           this.toastSvc.addToast(
             'Fehler beim abrufen des Fotos!',
-            err.error,
+            err.message + ":\n" + err.error,
             'error'
           );
         },
@@ -102,15 +102,23 @@ export class WebapiService {
             if (model.selectedMemorylandType !== undefined) {
               let memType = types
                 .filter(m =>
-                  m.name === model.selectedMemorylandType);
+                  m.id === model.selectedMemorylandType);
 
               if (memType !== undefined && memType.length > 0) {
-                model.selectedMemorylandType = memType[0].name;
+                model.selectedMemorylandType = memType[0].id;
               }
             }
           });
         },
         "error": (err) => console.error(err),
       });
+  }
+
+  createMemoryland(memorylandName: string, memorylandTypeId: number): Observable<Object>  {
+    return this.httpClient
+      .post(
+        `${environment.apiConfig.uri}/api/memoryland/${memorylandName}/${memorylandTypeId}`,
+        {headers: this.headers}
+      );
   }
 }

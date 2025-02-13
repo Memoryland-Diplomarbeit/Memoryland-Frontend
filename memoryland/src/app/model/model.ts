@@ -21,12 +21,12 @@ export interface Model {
   uploadPhotoModel: UploadPhotoModel;
   photoViewerPhoto: SelectedPhoto | undefined;
   selectedMemoryland: Memoryland | undefined;
-  selectedMemorylandType: string;
+  selectedMemorylandType: number | undefined;
 }
 
 const initialState: Model = {
   selectedMemoryland: undefined,
-  selectedMemorylandType: "",
+  selectedMemorylandType: undefined,
   memorylandTypes: [],
   memorylands: [],
   photoViewerPhoto: undefined,

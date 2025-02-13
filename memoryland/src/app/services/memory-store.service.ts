@@ -32,7 +32,7 @@ export class MemoryStoreService {
           "error": (err: HttpErrorResponse) => {
             this.toastSvc.addToast(
               'Fehler beim erstellen des Albums!',
-              err.error,
+              err.message + ":\n" + err.error,
               'error'
             );
           },
@@ -80,7 +80,7 @@ export class MemoryStoreService {
         error: (err) => {
           this.toastSvc.addToast(
             'Fehler beim hochladen des Fotos!',
-            err.error,
+            err.message + ":\n" + err.error,
             'error'
           );
         }
