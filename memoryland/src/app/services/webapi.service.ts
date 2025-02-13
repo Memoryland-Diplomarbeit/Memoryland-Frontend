@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Memoryland, MemorylandType, PhotoAlbum, SelectedPhoto} from '../model';
+import {Memoryland, MemorylandConfig, MemorylandType, PhotoAlbum, SelectedPhoto} from '../model';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
@@ -120,5 +120,35 @@ export class WebapiService {
         `${environment.apiConfig.uri}/api/memoryland/${memorylandName}/${memorylandTypeId}`,
         {headers: this.headers}
       );
+  }
+
+  public getMemorylandConfigFromServer(memorylandId: number): void {
+    this.httpClient.get<MemorylandConfig[]>(
+      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}/configuration`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (configs) => {
+          set((model) => {
+            model.memorylandConfigs = structuredClone(configs);
+            model.originalMemorylandConfigs = structuredClone(configs);
+          });
+        },
+        "error": (err) => console.error(err),
+      });
+  }
+
+  public postMemorylandConfig(memorylandId: number, position: number, photoId: number): void {
+    this.httpClient
+      .post(
+        `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}`,
+        {
+          "Position": position,
+          "PhotoId": photoId,
+        },
+        {headers: this.headers}
+      ).subscribe({
+        "next": () => this.getMemorylandConfigFromServer(memorylandId),
+        "error": (err) => console.error(err),
+      });
   }
 }

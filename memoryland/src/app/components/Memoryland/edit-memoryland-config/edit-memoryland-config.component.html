@@ -1,0 +1,48 @@
+@if (selectedMemoryland === undefined) {
+  <div class="fs-5 text-center text-muted">
+    Keine Memoryland ausgewählt
+  </div>
+} @else {
+  <div class="container">
+    <!-- Select Album -->
+    <label for="albumSelect">Wähle ein Fotoalbum aus:</label>
+    <select
+      id="albumSelect"
+      class="form-select"
+      [(ngModel)]="selectedPhotoAlbumId"
+      (change)="loadPhotos()">
+      @for (album of store.value.photoAlbums; track album.id) {
+        <option [value]="album.id">{{ album.name }}</option>
+      }
+    </select>
+
+    <!-- Display Photos from Album -->
+    <div class="row mt-3">
+      @for (photo of selectedPhotos; track photo.id) {
+        <div class="col-3">
+          <p draggable="true" (dragstart)="onDragStart($event, photo)">
+            {{photo.name}}
+          </p>
+        </div>
+      }
+    </div>
+
+    <!-- Photo Album Grid -->
+    <div class="row mt-3 border p-3">
+      <h5>Ordne die Fotos den Positionen zu (mittels Drag-and-Drop):</h5>
+      @for (slot of generateArray(selectedMemoryland!.memorylandType.photoAmount); track slot) {
+        <div class="col-3 border p-2 text-center"
+             (dragover)="onDragOver($event)"
+             (drop)="onDrop($event, slot)">
+          @if (getConfigForPos(slot) === undefined) {
+            <p class="placeholder">Pos {{slot}}</p>
+          } @else {
+            <p draggable="true" (dragstart)="onDragStartConf($event, getConfigForPos(slot))">
+              {{getConfigForPos(slot)!.photo.name}}
+            </p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

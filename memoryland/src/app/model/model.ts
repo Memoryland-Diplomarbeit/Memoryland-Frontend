@@ -6,7 +6,7 @@ import {
   ToastModel,
   UploadPhotoModel,
   SelectedPhoto,
-  MemorylandType
+  MemorylandType, MemorylandConfig
 } from './index';
 
 
@@ -22,6 +22,8 @@ export interface Model {
   photoViewerPhoto: SelectedPhoto | undefined;
   selectedMemoryland: Memoryland | undefined;
   selectedMemorylandType: number | undefined;
+  originalMemorylandConfigs: MemorylandConfig[];
+  memorylandConfigs: MemorylandConfig[];
 }
 
 const initialState: Model = {
@@ -41,7 +43,9 @@ const initialState: Model = {
   toastModel: {
     toasts: []
   },
-  createMemorylandName: ""
+  createMemorylandName: "",
+  memorylandConfigs: [],
+  originalMemorylandConfigs: []
 };
 
 export const store = new BehaviorSubject<Model>(initialState);
