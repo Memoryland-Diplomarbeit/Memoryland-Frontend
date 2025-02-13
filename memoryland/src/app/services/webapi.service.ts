@@ -151,4 +151,28 @@ export class WebapiService {
         "error": (err) => console.error(err),
       });
   }
+
+  public getPrivateToken(memorylandId: number) {
+    this.httpClient.get<{ "token":string }>(
+      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}/token/false`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (tokenDto) => {
+          set((model) => {
+            model.token = tokenDto.token;
+          });
+
+          this.httpClient.get(
+            `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}`,
+            {headers: this.headers.set('Authorization', 'Bearer ' + tokenDto.token),})
+            .subscribe({
+              "next": (obj) => {
+                console.debug(obj);
+              },
+              "error": (err) => console.error(err),
+            });
+        },
+        "error": (err) => console.error(err),
+      });
+  }
 }

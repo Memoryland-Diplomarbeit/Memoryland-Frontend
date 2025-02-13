@@ -1,7 +1,13 @@
-<div class="ratio ratio-16x9 w-100 h-100">
-  <iframe
-    width="100%"
-    height="800"
-    src="/unity/index.html?token=abcedfadf1230854">
-  </iframe>
-</div>
+@if ((token | async) === "") {
+  <div class="fs-5 text-center text-muted">
+    Bitte wähle ein Memoryland aus.
+  </div>
+} @else {
+  <div class="ratio ratio-16x9 w-100 h-100">
+    <iframe
+      width="100%"
+      height="800"
+      [src]="'/unity/index.html?token=' + (token | async)">
+    </iframe>
+  </div>
+}

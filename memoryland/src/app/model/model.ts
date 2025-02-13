@@ -24,6 +24,7 @@ export interface Model {
   selectedMemorylandType: number | undefined;
   originalMemorylandConfigs: MemorylandConfig[];
   memorylandConfigs: MemorylandConfig[];
+  token: string;
 }
 
 const initialState: Model = {
@@ -45,7 +46,8 @@ const initialState: Model = {
   },
   createMemorylandName: "",
   memorylandConfigs: [],
-  originalMemorylandConfigs: []
+  originalMemorylandConfigs: [],
+  token: ""
 };
 
 export const store = new BehaviorSubject<Model>(initialState);

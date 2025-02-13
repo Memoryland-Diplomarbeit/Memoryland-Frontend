@@ -5,13 +5,15 @@ import {distinctUntilChanged, map} from 'rxjs';
 import {Memoryland, PhotoAlbum, set, store} from '../../../model';
 import {EditMemorylandConfigComponent} from '../edit-memoryland-config/edit-memoryland-config.component';
 import {WebapiService} from '../../../services/webapi.service';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-memoryland-list',
   imports: [
     AsyncPipe,
     HoverClassDirective,
-    EditMemorylandConfigComponent
+    EditMemorylandConfigComponent,
+    RouterLink
   ],
   templateUrl: './memoryland-list.component.html',
   styleUrl: './memoryland-list.component.scss'

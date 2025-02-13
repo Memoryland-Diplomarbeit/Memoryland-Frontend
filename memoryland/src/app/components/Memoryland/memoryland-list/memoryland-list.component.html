@@ -33,11 +33,12 @@
             [class.table-secondary]="store.value.selectedMemoryland?.id === m.id"
             hover-class="table-secondary"
             [not-remove-requirement]="store.value.selectedMemoryland?.id === m.id">
-            <td
-              class="col"
-              type="button"
-              (click)="selectMemoryland(m)">
-              <div class="d-flex">
+            <td class="col">
+              <div
+                class="d-flex w-100"
+                type="button"
+                (click)="selectMemoryland(m)"
+                routerLink="../exploreWorlds">
                 <div class="w-50">
                   {{m.name}}
                 </div>
