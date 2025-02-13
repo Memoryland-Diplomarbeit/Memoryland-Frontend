@@ -5,12 +5,12 @@
 //@import "../node_modules/bootstrap/scss/mixins";
 //@import "../node_modules/bootstrap/scss/maps";
 
-$primary: purple;
-$secondary: gray;
+$primary: #d60000;
+$secondary: #fbaf3f;
 $success: green;
-$info: cyan;
-$warning: yellow;
-$danger: purple;
+$info: #66aff4;
+$warning: #e06300;
+$danger: red;
 
 $theme-colors: (
   "primary": $primary,
@@ -18,9 +18,9 @@ $theme-colors: (
   "success": $success,
   "info": $info,
   "warning": $warning,
-  "danger": #f00,
-  "light": #eee, //$gray-100,
-  "dark": #222, // $gray-900,
+  "danger": $danger,
+  "light": $gray-100,
+  "dark": $gray-900,
 );
 //
 //$custom-colors: (

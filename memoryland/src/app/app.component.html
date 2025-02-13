@@ -1,88 +1,89 @@
 <header>
-    <nav class="navbar navbar-expand bg-primary"
-         data-bs-theme="dark">
-        <div class="container-fluid">
-            <!--title-->
-            <a
-                class="navbar-brand fw-bold"
-                routerLink="/">
-                Memoryland
-            </a>
+  <nav class="navbar navbar-expand bg-primary"
+       data-bs-theme="dark">
+    <div class="container-fluid">
+      <!--title-->
+      <a
+        class="navbar-brand fw-bold"
+        routerLink="/">
+        <img src="Logo.webp" alt="Memoryland-Logo" class="logo-style">
+        Memoryland
+      </a>
 
-            <!--routes-->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <!--Home-->
-                <li class="nav-item"
-                    routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact:true}">
-                    <a class="nav-link"
-                       [class.active]="location.path() === ''"
-                       routerLink="/">
-                        Home
-                    </a>
-                </li>
-                <!--Explore Worlds-->
-                <li class="nav-item"
-                    routerLinkActive="active">
-                    <a class="nav-link"
-                       [class.active]="location.path() === '/exploreWorlds'"
-                       routerLink="exploreWorlds">
-                        Explore Worlds
-                    </a>
-                </li>
-                <!--All Worlds-->
-                <li class="nav-item"
-                    routerLinkActive="active">
-                    <a class="nav-link"
-                       [class.active]="location.path() === '/allWorlds'"
-                       routerLink="allWorlds">
-                        All Worlds
-                    </a>
-                </li>
-                <!--Memory-Store-->
-                <li class="nav-item"
-                    routerLinkActive="active">
-                    <a class="nav-link"
-                       [class.active]="location.path() === '/memoryStore'"
-                       routerLink="memoryStore">
-                        Memory Store
-                    </a>
-                </li>
-            </ul>
-        </div>
+      <!--routes-->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!--Home-->
+        <li class="nav-item"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link"
+             [class.active]="location.path() === ''"
+             routerLink="/">
+            Home
+          </a>
+        </li>
+        <!--Explore Worlds-->
+        <li class="nav-item"
+            routerLinkActive="active">
+          <a class="nav-link"
+             [class.active]="location.path() === '/exploreWorlds'"
+             routerLink="exploreWorlds">
+            Explore Worlds
+          </a>
+        </li>
+        <!--All Worlds-->
+        <li class="nav-item"
+            routerLinkActive="active">
+          <a class="nav-link"
+             [class.active]="location.path() === '/allWorlds'"
+             routerLink="allWorlds">
+            All Worlds
+          </a>
+        </li>
+        <!--Memory-Store-->
+        <li class="nav-item"
+            routerLinkActive="active">
+          <a class="nav-link"
+             [class.active]="location.path() === '/memoryStore'"
+             routerLink="memoryStore">
+            Memory Store
+          </a>
+        </li>
+      </ul>
+    </div>
 
-        <!--profile-->
-        <div
-          class="justify-content-end btn-group w-25 me-2"
-          role="group">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="msalAuthSvc.editProfile()">
-              Usernamen ändern
-            </button>
+    <!--profile-->
+    <div
+      class="justify-content-end btn-group w-25 me-2"
+      role="group">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="msalAuthSvc.editProfile()">
+        Usernamen ändern
+      </button>
 
-            @if (!msalAuthSvc.loggedIn) {
-              <button
-                type="button"
-                class="btn btn-light"
-                (click)="msalAuthSvc.login()">
-                Login
-              </button>
-            } @else {
-              <button
-                type="button"
-                class="btn btn-light"
-                (click)="msalAuthSvc.logout()">
-                Logout
-              </button>
-            }
-        </div>
-    </nav>
+      @if (!msalAuthSvc.loggedIn) {
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="msalAuthSvc.login()">
+          Login
+        </button>
+      } @else {
+        <button
+          type="button"
+          class="btn btn-light"
+          (click)="msalAuthSvc.logout()">
+          Logout
+        </button>
+      }
+    </div>
+  </nav>
 </header>
 
 <main>
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </main>
 
 <app-toast></app-toast>
