@@ -52,6 +52,12 @@ export class MemoryStorePageComponent implements OnInit{
         });
       }
     });
+
+    if (store.value.photoAlbums.length > 0) {
+      set(model => {
+        model.selectedPhotoAlbum = store.value.photoAlbums[0];
+      });
+    }
   }
 
   setAlbumName(val: string) {

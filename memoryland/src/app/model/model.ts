@@ -17,15 +17,16 @@ export interface Model {
   memorylands: Memoryland[];
   selectedPhotoAlbum: PhotoAlbum | undefined;
   createAlbumName: string;
+  createMemorylandName: string;
   uploadPhotoModel: UploadPhotoModel;
   photoViewerPhoto: SelectedPhoto | undefined;
   selectedMemoryland: Memoryland | undefined;
-  selectedMemorylandType: MemorylandType | undefined;
+  selectedMemorylandType: string;
 }
 
 const initialState: Model = {
   selectedMemoryland: undefined,
-  selectedMemorylandType: undefined,
+  selectedMemorylandType: "",
   memorylandTypes: [],
   memorylands: [],
   photoViewerPhoto: undefined,
@@ -39,7 +40,8 @@ const initialState: Model = {
   selectedPhotoAlbum: undefined,
   toastModel: {
     toasts: []
-  }
+  },
+  createMemorylandName: ""
 };
 
 export const store = new BehaviorSubject<Model>(initialState);

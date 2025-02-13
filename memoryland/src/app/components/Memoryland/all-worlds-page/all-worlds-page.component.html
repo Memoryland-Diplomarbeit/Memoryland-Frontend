@@ -27,7 +27,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5">Bitte gib den Namen des Albums ein.</h1>
+        <h1 class="modal-title fs-5">Memoryland erstellen</h1>
         <button
           type="button"
           class="btn-close"
@@ -36,35 +36,53 @@
         </button>
       </div>
 
-      <div class="modal-body">
-        <div class="input-group">
-          <span
-            class="input-group-text">
-            Album-Name
-          </span>
-          <input #resetText
-                 type="text"
-                 class="form-control"
-                 [value]="store.value.createAlbumName"
-                 (keyup)="null;//setAlbumName(resetText.value)">
+      <form>
+        <div class="modal-body">
+          <!-- type selection -->
+          <div class="mb-3">
+            <label class="form-label">Typ auswählen</label>
+            <select #albumSelect
+                    class="form-select"
+                    (change)="setType(albumSelect.value)"
+                    name="selectedAlbum"
+                    required
+                    [selectedIndex]="(selectedType | async)">
+              @for (t of (memorylandTypes | async); track t.name) {
+                <option [value]="t.name">{{ t.name }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- memoryland-name input -->
+          <div class="mb-3">
+            <label class="form-label">Namen angeben</label>
+            <input #memorylandNameInput
+                   type="text"
+                   class="form-control"
+                   [value]="store.value.createMemorylandName"
+                   (keyup)="setMemorylandName(memorylandNameInput.value)"
+                   name="filename">
+          </div>
         </div>
-      </div>
 
-      <div class="modal-footer">
-        <button
-          class="btn btn-secondary"
-          data-bs-dismiss="modal">
-          Cancel
-        </button>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancel
+          </button>
 
-        <button
-          (click)="null//memoryStoreSvc.createAlbum()"
-          class="btn btn-success"
-          [disabled]="true//memoryStoreSvc.albumNameNotValid()"
-          data-bs-dismiss="modal">
-          Memoryland erstellen
-        </button>
-      </div>
+          <button
+            type="button"
+            [disabled]="createMemorylandNotValid()"
+            (click)="createMemoryland()"
+            class="btn btn-success"
+            data-bs-dismiss="modal">
+            Memoryland erstellen
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

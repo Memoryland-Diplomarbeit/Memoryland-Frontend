@@ -100,9 +100,13 @@ export class WebapiService {
             model.memorylandTypes = types;
 
             if (model.selectedMemorylandType !== undefined) {
-              model.selectedMemorylandType = types
+              let memType = types
                 .filter(m =>
-                  m.name === model.selectedMemorylandType!.name)[0];
+                  m.name === model.selectedMemorylandType);
+
+              if (memType !== undefined && memType.length > 0) {
+                model.selectedMemorylandType = memType[0].name;
+              }
             }
           });
         },
