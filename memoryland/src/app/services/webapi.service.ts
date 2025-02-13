@@ -152,14 +152,18 @@ export class WebapiService {
       });
   }
 
-  public getPrivateToken(memorylandId: number) {
-    this.httpClient.get<{ "token":string }>(
-      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}/token/false`,
+  public getToken(memorylandId: number, isPublic:boolean = false){
+    this.httpClient.get<{ "token":string; "isPublic":boolean }>(
+      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}/token/${isPublic}`,
       {headers: this.headers})
       .subscribe({
         "next": (tokenDto) => {
           set((model) => {
-            model.token = tokenDto.token;
+            if (tokenDto.isPublic) {
+              model.publicToken = tokenDto.token;
+            } else {
+              model.token = tokenDto.token;
+            }
           });
         },
         "error": (err) => console.error(err),

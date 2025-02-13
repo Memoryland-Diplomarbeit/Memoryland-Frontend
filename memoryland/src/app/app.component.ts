@@ -3,9 +3,10 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {MsalModule} from "@azure/msal-angular";
 import {MsalAuthService} from "./services/msal-auth.service";
 import {CommonModule, Location} from "@angular/common";
-import {set} from './model';
+import {set, store} from './model';
 import {WebapiService} from './services/webapi.service';
 import {ToastComponent} from './components/toast/toast.component';
+import {distinctUntilChanged, map} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +40,17 @@ export class AppComponent implements OnInit{
         });
       }
     );
+
+    store.pipe(
+      map(model => model.selectedMemoryland),
+      distinctUntilChanged()
+    ).subscribe(_ => {
+        set(model => {
+          model.token = "";
+          model.publicToken = "";
+        });
+      }
+    )
   }
 
 }
