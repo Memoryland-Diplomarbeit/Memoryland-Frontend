@@ -4,6 +4,7 @@ import {debounceTime, distinctUntilChanged, map} from 'rxjs';
 import {WebapiService} from '../../../services/webapi.service';
 import {AsyncPipe} from '@angular/common';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-explore-worlds-page',
@@ -54,7 +55,7 @@ export class ExploreWorldsPageComponent implements OnInit {
 
       if (myToken !== null && myToken !== undefined && myToken !== "") {
         this.safeUrl = this.sanitizer
-          .bypassSecurityTrustResourceUrl(`/unity/index.html?token=${myToken}`);
+          .bypassSecurityTrustResourceUrl(`/unity/index.html?token=${myToken}&server=${environment.apiConfig.uri}`);
       } else {
         this.safeUrl = null;
       }
