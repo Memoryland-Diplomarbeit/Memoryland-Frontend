@@ -22,6 +22,8 @@ jobs:
 
       - name: Set environment variables in Angular
         run: |
+          touch src/environments/environment.ts
+          touch src/environments/environment.prod.ts
           echo "// `ng build` replaces \`environment.prod.ts\` with \`environment.prod.ts\`." > src/environments/environment.prod.ts
           echo "const b2cPolicies = {" >> src/environments/environment.prod.ts
           echo "  names: {" >> src/environments/environment.prod.ts
@@ -58,7 +60,6 @@ jobs:
           echo "    uri: '${{ secrets.BACKEND_URI }}'" >> src/environments/environment.prod.ts
           echo "  }" >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
-          touch src/environments/environment.ts
 
       - name: Build And Deploy
         id: builddeploy
