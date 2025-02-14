@@ -1,4 +1,3 @@
-// @ts-ignore
 const b2cPolicies = {
   names: {
     signUpSignIn: window["env"]?.B2C_SIGNUP_SIGNIN_FLOW!,
