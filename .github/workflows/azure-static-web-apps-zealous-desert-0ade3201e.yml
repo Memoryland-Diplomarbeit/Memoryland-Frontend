@@ -28,7 +28,7 @@ jobs:
 
       - name: Set environment variables in Angular
         run: |
-          cat <<EOL > src/environments/environment.prod.ts
+          cat <<EOL > memoryland/src/environments/environment.prod.ts
           const b2cPolicies = {
             names: {
               signUpSignIn: '${{ secrets.B2C_SIGNUP_SIGNIN_FLOW }}',
