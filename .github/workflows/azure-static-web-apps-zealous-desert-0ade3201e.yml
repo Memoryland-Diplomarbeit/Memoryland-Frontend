@@ -28,41 +28,43 @@ jobs:
 
       - name: Set environment variables in Angular
         run: |
-          echo "const b2cPolicies = {" >> src/environments/environment.prod.ts
-          echo "  names: {" >> memoryland/src/environments/environment.prod.ts
-          echo "    signUpSignIn: '${{ secrets.B2C_SIGNUP_SIGNIN_FLOW }}'," >> memoryland/src/environments/environment.prod.ts
-          echo "    editProfile: '${{ secrets.B2C_EDIT_PROFILE_FLOW }}'" >> memoryland/src/environments/environment.prod.ts
-          echo "  }," >> memoryland/src/environments/environment.prod.ts
-          echo "  authorities: {" >> memoryland/src/environments/environment.prod.ts
-          echo "    signUpSignIn: {" >> memoryland/src/environments/environment.prod.ts
-          echo "      authority: '${{ secrets.B2C_SIGNUP_SIGNIN_AUTHORITY }}'" >> memoryland/src/environments/environment.prod.ts
-          echo "    }," >> memoryland/src/environments/environment.prod.ts
-          echo "    editProfile: {" >> memoryland/src/environments/environment.prod.ts
-          echo "      authority: '${{ secrets.B2C_EDIT_PROFILE_AUTHORITY }}'" >> memoryland/src/environments/environment.prod.ts
-          echo "    }" >> memoryland/src/environments/environment.prod.ts
-          echo "  }," >> memoryland/src/environments/environment.prod.ts
-          echo "  authorityDomain: '${{ secrets.B2C_AUTHORITY_DOMAIN }}'" >> memoryland/src/environments/environment.prod.ts
-          echo "};" >> memoryland/src/environments/environment.prod.ts
-          echo "" >> memoryland/src/environments/environment.prod.ts
-          echo "export const environment = {" >> memoryland/src/environments/environment.prod.ts
-          echo "  production: false," >> memoryland/src/environments/environment.prod.ts
-          echo "  b2cPolicies: b2cPolicies," >> memoryland/src/environments/environment.prod.ts
-          echo "  msalConfig: {" >> memoryland/src/environments/environment.prod.ts
-          echo "    auth: {" >> memoryland/src/environments/environment.prod.ts
-          echo "      clientId: '${{ secrets.CLIENT_ID }}'," >> memoryland/src/environments/environment.prod.ts
-          echo "      authority: b2cPolicies.authorities.signUpSignIn.authority," >> memoryland/src/environments/environment.prod.ts
-          echo "      knownAuthorities: [b2cPolicies.authorityDomain]," >> memoryland/src/environments/environment.prod.ts
-          echo "      redirectUri: '/'," >> memoryland/src/environments/environment.prod.ts
-          echo "    }" >> memoryland/src/environments/environment.prod.ts
-          echo "  }," >> memoryland/src/environments/environment.prod.ts
-          echo "  apiConfig: {" >> memoryland/src/environments/environment.prod.ts
-          echo "    scopes: [" >> memoryland/src/environments/environment.prod.ts
-          echo "      '${{ secrets.SCOPE_READ }}'," >> memoryland/src/environments/environment.prod.ts
-          echo "      '${{ secrets.SCOPE_WRITE }}'" >> memoryland/src/environments/environment.prod.ts
-          echo "    ]," >> memoryland/src/environments/environment.prod.ts
-          echo "    uri: '${{ secrets.BACKEND_URI }}'" >> memoryland/src/environments/environment.prod.ts
-          echo "  }" >> memoryland/src/environments/environment.prod.ts
-          echo "};" >> memoryland/src/environments/environment.prod.ts
+          cat <<EOL > src/environments/environment.prod.ts
+          const b2cPolicies = {
+            names: {
+              signUpSignIn: '${{ secrets.B2C_SIGNUP_SIGNIN_FLOW }}',
+              editProfile: '${{ secrets.B2C_EDIT_PROFILE_FLOW }}'
+            },
+            authorities: {
+              signUpSignIn: {
+                authority: '${{ secrets.B2C_SIGNUP_SIGNIN_AUTHORITY }}'
+              },
+              editProfile: {
+                authority: '${{ secrets.B2C_EDIT_PROFILE_AUTHORITY }}'
+              }
+            },
+            authorityDomain: '${{ secrets.B2C_AUTHORITY_DOMAIN }}'
+          };
+
+          export const environment = {
+            production: true,
+            b2cPolicies: b2cPolicies,
+            msalConfig: {
+              auth: {
+                clientId: '${{ secrets.CLIENT_ID }}',
+                authority: b2cPolicies.authorities.signUpSignIn.authority,
+                knownAuthorities: [b2cPolicies.authorityDomain],
+                redirectUri: '/'
+              }
+            },
+            apiConfig: {
+              scopes: [
+                '${{ secrets.SCOPE_READ }}',
+                '${{ secrets.SCOPE_WRITE }}'
+              ],
+              uri: '${{ secrets.BACKEND_URI }}'
+            }
+          };
+          EOL
 
       - name: Build And Deploy
         id: builddeploy
