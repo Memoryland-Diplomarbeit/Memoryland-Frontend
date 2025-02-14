@@ -20,11 +20,14 @@ jobs:
           submodules: true
           lfs: false
 
-      - name: Set environment variables in Angular
+      - name: Create environment files
         run: |
           touch ./memoryland/src/environments/environment.ts;
           touch ./memoryland/src/environments/environment.prod.ts;
           tree;
+
+      - name: Set environment variables in Angular
+        run: |
           echo "// `ng build` replaces \`environment.prod.ts\` with \`environment.prod.ts\`." > src/environments/environment.prod.ts
           echo "const b2cPolicies = {" >> src/environments/environment.prod.ts
           echo "  names: {" >> src/environments/environment.prod.ts
