@@ -231,4 +231,20 @@ export class WebapiService {
         "error": (err) => console.error(err),
       });
   }
+
+  renamePhotoAlbum(id: number, name: string) {
+    let renameModelDto: RenameModelDto = {
+      oldId: id,
+      newName: name
+    }
+
+    this.httpClient.put(
+      `${environment.apiConfig.uri}/api/PhotoAlbum/`,
+      renameModelDto,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getPhotoAlbumsFromServer(),
+        "error": (err) => console.error(err),
+      });
+  }
 }
