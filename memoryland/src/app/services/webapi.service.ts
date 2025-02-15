@@ -38,7 +38,13 @@ export class WebapiService {
             }
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Photoalben!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -95,7 +101,13 @@ export class WebapiService {
             }
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Memorylands!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -121,7 +133,13 @@ export class WebapiService {
             }
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Memoryland-Typen!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -146,7 +164,13 @@ export class WebapiService {
             model.originalMemorylandConfigs = structuredClone(model.memorylandConfigs);
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Memoryland-Configurationen!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -161,7 +185,13 @@ export class WebapiService {
         {headers: this.headers}
       ).subscribe({
         "next": () => this.getMemorylandConfigFromServer(memorylandId),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim speichern der Memoryland-Configuration!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -189,7 +219,13 @@ export class WebapiService {
       {headers: this.headers})
       .subscribe({
         "next": () => this.getPhotoAlbumsFromServer(),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen des Fotos!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -199,7 +235,13 @@ export class WebapiService {
       {headers: this.headers})
       .subscribe({
         "next": () => this.getPhotoAlbumsFromServer(),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen des Albums!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -209,7 +251,13 @@ export class WebapiService {
       {headers: this.headers})
       .subscribe({
         "next": () => this.getMemorylandsFromServer(),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen des Memorylands!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -225,7 +273,13 @@ export class WebapiService {
       {headers: this.headers})
       .subscribe({
         "next": () => this.getMemorylandsFromServer(),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim umbenennen des Memorylands!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -241,7 +295,13 @@ export class WebapiService {
       {headers: this.headers})
       .subscribe({
         "next": () => this.getPhotoAlbumsFromServer(),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim umbenennen des Fotos!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -257,7 +317,13 @@ export class WebapiService {
       {headers: this.headers})
       .subscribe({
         "next": () => this.getPhotoAlbumsFromServer(),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim umbenennen des Albums!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 }
