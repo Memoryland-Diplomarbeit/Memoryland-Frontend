@@ -14,10 +14,6 @@
       "statusCode": 200
     },
     {
-      "route": "/helpPage",
-      "redirect": "/helpPage"
-    },
-    {
       "route": "/unity/index.html",
       "redirect": "/unity/index.html"
     },
