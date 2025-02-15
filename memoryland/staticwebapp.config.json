@@ -1,8 +1,36 @@
 {
-  "navigationFallback":
+  "routes": [
     {
-      "rewrite": "/index.html",
-      "exclude": ["*.{css,scss,js,png,jpg,jpeg,gif,svg,ico}"]
+      "route": "/",
+      "redirect": "/"
+    },
+    {
+      "route": "/about",
+      "redirect": "/about"
+    },
+    {
+      "route": "/allWorlds",
+      "redirect": "/allWorlds"
+    },
+    {
+      "route": "/exploreWorlds",
+      "redirect": "/exploreWorlds"
+    },
+    {
+      "route": "/memoryStore",
+      "redirect": "/memoryStore"
+    },
+    {
+      "route": "/helpPage",
+      "redirect": "/helpPage"
+    },
+    {
+      "route": "/login-failed",
+      "redirect": "/login-failed"
+    },
+    {
+      "route": "/**",
+      "redirect": "/**"
     }
   ]
 }
