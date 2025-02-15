@@ -10,8 +10,7 @@
     },
     {
       "route": "/memoryStore",
-      "redirect": "/index.html",
-      "statusCode": 200
+      "redirect": "index.html"
     },
     {
       "route": "/unity/index.html",
