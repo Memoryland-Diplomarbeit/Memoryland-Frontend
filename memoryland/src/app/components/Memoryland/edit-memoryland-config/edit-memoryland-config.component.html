@@ -17,27 +17,33 @@
     </select>
 
     <!-- Display Photos from Album -->
-    <div class="row mt-3">
+    <div class="row text-center d-flex justify-content-center align-items-center">
       @for (photo of selectedPhotos; track photo.id) {
-        <div class="col-3">
-          <p draggable="true" (dragstart)="onDragStart($event, photo)">
-            {{photo.name}}
-          </p>
+        <div
+          class="col-4 p-1 mt-3 border d-flex justify-content-center align-items-center img-box word-break"
+          draggable="true"
+          (dragstart)="onDragStart($event, photo)">
+          {{ photo.name }}
         </div>
       }
     </div>
 
     <!-- Photo Album Grid -->
-    <div class="row mt-3 border p-3 overflow-scroll drag-and-drop-height">
+    <div class="row mt-3 overflow-scroll drag-and-drop-height">
       <h5>Ordne die Fotos den Positionen zu (mittels Drag-and-Drop):</h5>
       @for (slot of generateArray(selectedMemoryland!.memorylandType.photoAmount); track slot) {
-        <div class="col-3 border p-2 text-center"
+        <div class="col-4 border text-center img-box word-break p-1"
              (dragover)="onDragOver($event)"
              (drop)="onDrop($event, slot)">
           @if (getConfigForPos(slot) === undefined) {
-            <p class="placeholder">Pos {{slot}}</p>
+            <div class="placeholder text-center d-flex justify-content-center align-items-center">
+              Pos {{slot}}
+            </div>
           } @else {
-            <p draggable="true" (dragstart)="onDragStartConf($event, getConfigForPos(slot))">
+            <p
+              class="text-center d-flex justify-content-center align-items-center h-100"
+              draggable="true"
+              (dragstart)="onDragStartConf($event, getConfigForPos(slot))">
               {{getConfigForPos(slot)!.photo.name}}
             </p>
           }
