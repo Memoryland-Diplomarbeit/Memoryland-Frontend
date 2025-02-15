@@ -6,4 +6,6 @@ export * from './entity/MemoryStore/Photo';
 export * from './entity/Memoryland/Memoryland';
 export * from './entity/Memoryland/MemorylandType';
 export * from './entity/Memoryland/MemorylandConfig';
+export * from './entity/Memoryland/RenameModel';
+export * from './entity/Memoryland/RenameModelDto';
 export * from './entity/toast/toast-index';

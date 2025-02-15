@@ -6,7 +6,7 @@ import {
   ToastModel,
   UploadPhotoModel,
   SelectedPhoto,
-  MemorylandType, MemorylandConfig
+  MemorylandType, MemorylandConfig, RenameModel, Photo
 } from './index';
 
 
@@ -26,6 +26,9 @@ export interface Model {
   memorylandConfigs: MemorylandConfig[];
   token: string;
   publicToken: string;
+  renameMemoryland: RenameModel<Memoryland>;
+  renamePhoto: RenameModel<Photo>;
+  renamePhotoAlbum: RenameModel<PhotoAlbum>;
 }
 
 const initialState: Model = {
@@ -49,7 +52,19 @@ const initialState: Model = {
   memorylandConfigs: [],
   originalMemorylandConfigs: [],
   token: "",
-  publicToken: ""
+  publicToken: "",
+  renameMemoryland: {
+    renameObj: undefined,
+    name: ""
+  },
+  renamePhoto: {
+    renameObj: undefined,
+    name: ""
+  },
+  renamePhotoAlbum: {
+    renameObj: undefined,
+    name: ""
+  }
 };
 
 export const store = new BehaviorSubject<Model>(initialState);

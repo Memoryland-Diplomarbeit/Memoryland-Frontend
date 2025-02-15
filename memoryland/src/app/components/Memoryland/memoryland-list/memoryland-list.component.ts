@@ -58,4 +58,33 @@ export class MemorylandListComponent {
       })
     }
   }
+
+  renameMemorylandNotValid() {
+    return store.value.renameMemoryland.name === "" ||
+      store.value.renameMemoryland.renameObj === undefined
+  }
+
+  setRenameMemoryland(m: Memoryland) {
+    set(model => {
+      model.renameMemoryland.renameObj = m;
+      model.renameMemoryland.name = m.name;
+    });
+  }
+
+  setMemorylandName(val: string) {
+    set(model => {
+      model.renameMemoryland.name = val;
+    });
+  }
+
+  renameMemoryland() {
+    let renameMemoryland = store.value.renameMemoryland;
+
+    if (!this.renameMemorylandNotValid()) {
+      this.webApi.renameMemoryland(
+        renameMemoryland.renameObj!.id,
+        renameMemoryland.name
+      );
+    }
+  }
 }

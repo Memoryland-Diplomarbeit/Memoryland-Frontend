@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Memoryland, MemorylandConfig, MemorylandType, PhotoAlbum, SelectedPhoto} from '../model';
+import {Memoryland, MemorylandConfig, MemorylandType, PhotoAlbum, RenameModelDto, SelectedPhoto} from '../model';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
@@ -193,6 +193,22 @@ export class WebapiService {
   public deleteMemoryland(memorylandId: number){
     this.httpClient.delete(
       `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getMemorylandsFromServer(),
+        "error": (err) => console.error(err),
+      });
+  }
+
+  renameMemoryland(id: number, name: string) {
+    let renameModelDto: RenameModelDto = {
+      oldId: id,
+      newName: name
+    }
+
+    this.httpClient.put(
+      `${environment.apiConfig.uri}/api/Memoryland/`,
+      renameModelDto,
       {headers: this.headers})
       .subscribe({
         "next": () => this.getMemorylandsFromServer(),
