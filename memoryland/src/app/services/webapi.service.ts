@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Memoryland, MemorylandConfig, MemorylandType, PhotoAlbum, SelectedPhoto} from '../model';
+import {Memoryland, MemorylandConfig, MemorylandType, PhotoAlbum, RenameModelDto, SelectedPhoto} from '../model';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
@@ -22,7 +22,14 @@ export class WebapiService {
       .subscribe({
         "next": (photoAlbums) => {
           set((model) => {
-            model.photoAlbums = photoAlbums;
+            model.photoAlbums = photoAlbums.map(p => {
+              p.photos = p.photos.sort(
+                (a,b) =>
+                  a.name.localeCompare(b.name));
+              return p;
+            }).sort(
+              (a,b) =>
+                a.name.localeCompare(b.name));
 
             if (model.selectedPhotoAlbum !== undefined) {
               model.selectedPhotoAlbum = photoAlbums
@@ -31,7 +38,13 @@ export class WebapiService {
             }
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Photoalben!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -41,7 +54,7 @@ export class WebapiService {
       {headers: this.headers});
   }
 
-  uploadPhoto(formData: FormData): Observable<Object>  {
+  public uploadPhoto(formData: FormData): Observable<Object>  {
     return this.httpClient
       .post(
         `${environment.apiConfig.uri}/api/upload/photo`,
@@ -77,7 +90,9 @@ export class WebapiService {
       .subscribe({
         "next": (memorylands) => {
           set((model) => {
-            model.memorylands = memorylands;
+            model.memorylands = memorylands.sort(
+              (a,b) =>
+                a.name.localeCompare(b.name));
 
             if (model.selectedMemoryland !== undefined) {
               model.selectedMemoryland = memorylands
@@ -86,7 +101,13 @@ export class WebapiService {
             }
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Memorylands!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -97,7 +118,9 @@ export class WebapiService {
       .subscribe({
         "next": (types) => {
           set((model) => {
-            model.memorylandTypes = types;
+            model.memorylandTypes = types.sort(
+              (a,b) =>
+                a.name.localeCompare(b.name));
 
             if (model.selectedMemorylandType !== undefined) {
               let memType = types
@@ -110,11 +133,17 @@ export class WebapiService {
             }
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Memoryland-Typen!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
-  createMemoryland(memorylandName: string, memorylandTypeId: number): Observable<Object>  {
+  public createMemoryland(memorylandName: string, memorylandTypeId: number): Observable<Object>  {
     return this.httpClient
       .post(
         `${environment.apiConfig.uri}/api/memoryland/${memorylandName}/${memorylandTypeId}`,
@@ -129,11 +158,19 @@ export class WebapiService {
       .subscribe({
         "next": (configs) => {
           set((model) => {
-            model.memorylandConfigs = structuredClone(configs);
-            model.originalMemorylandConfigs = structuredClone(configs);
+            model.memorylandConfigs = structuredClone(configs)
+              .sort((a,b) =>
+                (a.position > b.position ? 1 : -1));
+            model.originalMemorylandConfigs = structuredClone(model.memorylandConfigs);
           });
         },
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen der Memoryland-Configurationen!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -148,7 +185,13 @@ export class WebapiService {
         {headers: this.headers}
       ).subscribe({
         "next": () => this.getMemorylandConfigFromServer(memorylandId),
-        "error": (err) => console.error(err),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim speichern der Memoryland-Configuration!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 
@@ -167,6 +210,136 @@ export class WebapiService {
           });
         },
         "error": (err) => console.error(err),
+      });
+  }
+
+  public deletePhoto(photoId: number){
+    this.httpClient.delete(
+      `${environment.apiConfig.uri}/api/Photo/${photoId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getPhotoAlbumsFromServer(),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen des Fotos!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public deletePhotoAlbum(photoAlbumId: number){
+    this.httpClient.delete(
+      `${environment.apiConfig.uri}/api/PhotoAlbum/${photoAlbumId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getPhotoAlbumsFromServer(),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen des Albums!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public deleteMemoryland(memorylandId: number){
+    this.httpClient.delete(
+      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getMemorylandsFromServer(),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen des Memorylands!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public deleteMemorylandConfig(configId: number, memorylandId: number){
+    this.httpClient.delete(
+      `${environment.apiConfig.uri}/api/Memoryland/config/${configId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getMemorylandConfigFromServer(memorylandId),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen der Memoryland-Configuration!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public renameMemoryland(id: number, name: string) {
+    let renameModelDto: RenameModelDto = {
+      oldId: id,
+      newName: name
+    }
+
+    this.httpClient.put(
+      `${environment.apiConfig.uri}/api/Memoryland/`,
+      renameModelDto,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getMemorylandsFromServer(),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim umbenennen des Memorylands!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public renamePhoto(id: number, name: string) {
+    let renameModelDto: RenameModelDto = {
+      oldId: id,
+      newName: name
+    }
+
+    this.httpClient.put(
+      `${environment.apiConfig.uri}/api/Photo/`,
+      renameModelDto,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getPhotoAlbumsFromServer(),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim umbenennen des Fotos!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public renamePhotoAlbum(id: number, name: string) {
+    let renameModelDto: RenameModelDto = {
+      oldId: id,
+      newName: name
+    }
+
+    this.httpClient.put(
+      `${environment.apiConfig.uri}/api/PhotoAlbum/`,
+      renameModelDto,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getPhotoAlbumsFromServer(),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim umbenennen des Albums!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
       });
   }
 }

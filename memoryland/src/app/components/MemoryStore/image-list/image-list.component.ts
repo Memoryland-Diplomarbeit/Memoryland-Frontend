@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {Photo, set, store} from '../../../model';
+import {Memoryland, Photo, set, store} from '../../../model';
 import {distinctUntilChanged, map} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {HoverClassDirective} from '../../../directives/hover-class.directive';
@@ -28,8 +28,8 @@ export class ImageListComponent {
       distinctUntilChanged()
     );
 
-  deleteImage() {
-
+  deleteImage(photo: Photo) {
+    this.webApi.deletePhoto(photo.id);
   }
 
   selectImage(i: Photo) {
@@ -49,4 +49,35 @@ export class ImageListComponent {
       model.photoViewerPhoto = undefined;
     });
   }
+
+  renamePhotoNotValid() {
+    return store.value.renamePhoto.name === "" ||
+      store.value.renamePhoto.renameObj === undefined
+  }
+
+  setRenamePhoto(p: Photo) {
+    set(model => {
+      model.renamePhoto.renameObj = p;
+      model.renamePhoto.name = p.name;
+    });
+  }
+
+  setPhotoName(val: string) {
+    set(model => {
+      model.renamePhoto.name = val;
+    });
+  }
+
+  renamePhoto() {
+    let renamePhoto = store.value.renamePhoto;
+
+    if (!this.renamePhotoNotValid()) {
+      this.webApi.renamePhoto(
+        renamePhoto.renameObj!.id,
+        renamePhoto.name
+      );
+    }
+  }
+
+  protected readonly store = store;
 }

@@ -69,12 +69,6 @@ export class MemoryStoreService {
             `Das Foto ${uploadPhotoModel.fileName} wurde erfolgreich hochgeladen!`,
             'success'
           );
-
-          set(model => {
-            model.uploadPhotoModel.fileName = '';
-            model.uploadPhotoModel.selectedAlbumId = undefined;
-            model.uploadPhotoModel.file = undefined;
-          });
           this.webApi.getPhotoAlbumsFromServer();
         },
         error: (err) => {

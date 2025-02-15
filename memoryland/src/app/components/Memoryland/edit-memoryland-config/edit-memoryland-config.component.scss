@@ -1,14 +1,22 @@
 .placeholder {
   display: block;
   width: 100%;
-  height: 100px;
+  height: 100%;
   background: #f8f9fa;
-  text-align: center;
-  line-height: 100px;
   color: #6c757d;
   border: 2px dashed #ccc;
 }
 
 .drag-and-drop-height {
-  height: 40vh;
+  max-height: 40vh;
+  min-height: 25vh;
 }
+
+.img-box {
+  height: 9vh;
+}
+
+.word-break {
+  word-break: break-word;
+}
+

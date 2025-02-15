@@ -76,6 +76,7 @@ export class EditMemorylandConfigComponent implements OnInit {
             memorylandConfig.position !== slot);
 
         model.memorylandConfigs.push({
+          id: undefined,
           photo: photo,
           position: slot
         });
