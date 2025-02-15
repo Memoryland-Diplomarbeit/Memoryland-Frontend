@@ -25,7 +25,11 @@
       "redirect": "/helpPage"
     },
     {
-      "route": "/*",
+      "route": "/unity/index.html",
+      "redirect": "/unity/index.html"
+    },
+    {
+      "route": "/login-failed",
       "redirect": "/login-failed"
     }
   ]
