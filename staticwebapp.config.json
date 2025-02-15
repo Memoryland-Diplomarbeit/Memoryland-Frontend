@@ -1,10 +1,6 @@
 {
   "routes": [
     {
-      "route": "/about",
-      "redirect": "/about"
-    },
-    {
       "route": "/allWorlds",
       "redirect": "/allWorlds"
     },
