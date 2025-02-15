@@ -1,36 +1,8 @@
 {
   "routes": [
     {
-      "route": "/",
-      "redirect": "/"
-    },
-    {
-      "route": "/about",
-      "redirect": "/about"
-    },
-    {
-      "route": "/allWorlds",
-      "redirect": "/allWorlds"
-    },
-    {
-      "route": "/exploreWorlds",
-      "redirect": "/exploreWorlds"
-    },
-    {
-      "route": "/memoryStore",
-      "redirect": "/memoryStore"
-    },
-    {
-      "route": "/helpPage",
-      "redirect": "/helpPage"
-    },
-    {
-      "route": "/unity/index.html",
-      "redirect": "/unity/index.html"
-    },
-    {
-      "route": "/login-failed",
-      "redirect": "/login-failed"
+      "route": "/*",
+      "redirect": "/*"
     }
   ]
 }
