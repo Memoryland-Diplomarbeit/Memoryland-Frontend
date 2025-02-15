@@ -67,25 +67,6 @@ jobs:
           };
           EOL
 
-      - name: Create environment files
-        run: |
-          touch ./routes.json
-          tree;
-
-      - name: Set routes.json
-        run: |
-          cat <<EOL > routes.json
-          {
-            "routes": [
-              {
-                "route": "/**",
-                "serve": "/index.html",
-                "statusCode": 200
-              }
-            ]
-          }
-          EOL
-
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
