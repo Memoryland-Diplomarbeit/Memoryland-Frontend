@@ -37,7 +37,8 @@ export class MemorylandListComponent {
     this.webApi.getMemorylandConfigFromServer(m.id);
   }
 
-  deleteMemoryland() {
+  deleteMemoryland(m: Memoryland) {
+    this.webApi.deleteMemoryland(m.id);
   }
 
   protected readonly store = store;

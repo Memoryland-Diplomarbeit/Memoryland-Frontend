@@ -189,4 +189,14 @@ export class WebapiService {
         "error": (err) => console.error(err),
       });
   }
+
+  public deleteMemoryland(memorylandId: number){
+    this.httpClient.delete(
+      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getMemorylandsFromServer(),
+        "error": (err) => console.error(err),
+      });
+  }
 }
