@@ -18,7 +18,7 @@
     },
     {
       "route": "/memoryStore",
-      "rewrite": "/memoryStore"
+      "redirect": "/index.html"
     },
     {
       "route": "/helpPage",
