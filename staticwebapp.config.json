@@ -18,7 +18,7 @@
     },
     {
       "route": "/memoryStore",
-      "redirect": "/memoryStore"
+      "rewrite": "/memoryStore"
     },
     {
       "route": "/helpPage",
@@ -35,6 +35,8 @@
   ],
   "navigationFallback": {
     "rewrite": "./index.html",
-    "exclude": ["*.{css,scss,js,png,gif,ico,jpg,jpeg,svg}"]
+    "exclude": [
+      "*.{css,scss,js,png,gif,ico,jpg,jpeg,svg}"
+    ]
   }
 }
