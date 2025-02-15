@@ -18,7 +18,8 @@
     },
     {
       "route": "/memoryStore",
-      "redirect": "/index.html"
+      "redirect": "/index.html",
+      "statusCode": 200
     },
     {
       "route": "/helpPage",
