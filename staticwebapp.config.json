@@ -10,7 +10,7 @@
     },
     {
       "route": "/memoryStore",
-      "redirect": "index.html"
+      "redirect": "/"
     },
     {
       "route": "/unity/index.html",
