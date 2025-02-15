@@ -1,14 +1,6 @@
 {
   "routes": [
     {
-      "route": "/",
-      "redirect": "/"
-    },
-    {
-      "route": "/about",
-      "redirect": "/about"
-    },
-    {
       "route": "/allWorlds",
       "redirect": "/allWorlds"
     },
@@ -18,11 +10,7 @@
     },
     {
       "route": "/memoryStore",
-      "redirect": "/memoryStore"
-    },
-    {
-      "route": "/helpPage",
-      "redirect": "/helpPage"
+      "redirect": "/"
     },
     {
       "route": "/unity/index.html",
@@ -35,6 +23,8 @@
   ],
   "navigationFallback": {
     "rewrite": "./index.html",
-    "exclude": ["*.{css,scss,js,png,gif,ico,jpg,jpeg,svg}"]
+    "exclude": [
+      "*.{css,scss,js,png,gif,ico,jpg,jpeg,svg}"
+    ]
   }
 }
