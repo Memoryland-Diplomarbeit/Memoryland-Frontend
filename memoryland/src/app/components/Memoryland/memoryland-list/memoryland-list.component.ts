@@ -45,15 +45,43 @@ export class MemorylandListComponent {
 
   updateMemorylandConfig() {
     if (store.value.selectedMemoryland !== undefined) {
-      store.value.memorylandConfigs.forEach((conf) => {
-        let origConf = store.value.originalMemorylandConfigs
-          .find(c => c.position === conf.position);
+      let positions = [...new Set([
+        ...store.value.memorylandConfigs.map(c => c.position),
+        ...store.value.originalMemorylandConfigs.map(c => c.position),
+      ])];
 
-        if (origConf === undefined || origConf.photo.id !== conf.photo.id) {
+      positions.forEach((position) => {
+        let origConf = store.value.originalMemorylandConfigs
+          .find(c => c.position === position);
+
+        let newConf = store.value.memorylandConfigs
+          .find(c => c.position === position);
+
+        console.debug(origConf);
+
+        if (
+          newConf === undefined &&
+          origConf !== undefined &&
+          origConf.id !== undefined) {
+          this.webApi.deleteMemorylandConfig(
+            origConf.id,
+            store.value.selectedMemoryland!.id
+          );
+        } else if (
+          origConf === undefined &&
+          newConf !== undefined) {
           this.webApi.postMemorylandConfig(
             store.value.selectedMemoryland!.id,
-            conf.position,
-            conf.photo.id);
+            newConf.position,
+            newConf.photo.id);
+        } else if (
+          origConf !== undefined &&
+          newConf !== undefined &&
+          origConf.photo.id !== newConf.photo.id) {
+          this.webApi.postMemorylandConfig(
+            store.value.selectedMemoryland!.id,
+            newConf.position,
+            newConf.photo.id);
         }
       })
     }

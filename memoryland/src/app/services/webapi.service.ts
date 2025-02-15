@@ -261,6 +261,22 @@ export class WebapiService {
       });
   }
 
+  public deleteMemorylandConfig(configId: number, memorylandId: number){
+    this.httpClient.delete(
+      `${environment.apiConfig.uri}/api/Memoryland/config/${configId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getMemorylandConfigFromServer(memorylandId),
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim löschen der Memoryland-Configuration!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
   public renameMemoryland(id: number, name: string) {
     let renameModelDto: RenameModelDto = {
       oldId: id,
