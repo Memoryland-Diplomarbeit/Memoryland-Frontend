@@ -28,9 +28,6 @@
     {
       "route": "/login-failed",
       "redirect": "/login-failed"
-    },
-    {
-      "route": "/*"
     }
   ],
   "navigationFallback": {
