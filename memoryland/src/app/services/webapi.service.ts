@@ -22,7 +22,14 @@ export class WebapiService {
       .subscribe({
         "next": (photoAlbums) => {
           set((model) => {
-            model.photoAlbums = photoAlbums;
+            model.photoAlbums = photoAlbums.map(p => {
+              p.photos = p.photos.sort(
+                (a,b) =>
+                  a.name.localeCompare(b.name));
+              return p;
+            }).sort(
+              (a,b) =>
+                a.name.localeCompare(b.name));
 
             if (model.selectedPhotoAlbum !== undefined) {
               model.selectedPhotoAlbum = photoAlbums
@@ -41,7 +48,7 @@ export class WebapiService {
       {headers: this.headers});
   }
 
-  uploadPhoto(formData: FormData): Observable<Object>  {
+  public uploadPhoto(formData: FormData): Observable<Object>  {
     return this.httpClient
       .post(
         `${environment.apiConfig.uri}/api/upload/photo`,
@@ -77,7 +84,9 @@ export class WebapiService {
       .subscribe({
         "next": (memorylands) => {
           set((model) => {
-            model.memorylands = memorylands;
+            model.memorylands = memorylands.sort(
+              (a,b) =>
+                a.name.localeCompare(b.name));
 
             if (model.selectedMemoryland !== undefined) {
               model.selectedMemoryland = memorylands
@@ -97,7 +106,9 @@ export class WebapiService {
       .subscribe({
         "next": (types) => {
           set((model) => {
-            model.memorylandTypes = types;
+            model.memorylandTypes = types.sort(
+              (a,b) =>
+                a.name.localeCompare(b.name));
 
             if (model.selectedMemorylandType !== undefined) {
               let memType = types
@@ -114,7 +125,7 @@ export class WebapiService {
       });
   }
 
-  createMemoryland(memorylandName: string, memorylandTypeId: number): Observable<Object>  {
+  public createMemoryland(memorylandName: string, memorylandTypeId: number): Observable<Object>  {
     return this.httpClient
       .post(
         `${environment.apiConfig.uri}/api/memoryland/${memorylandName}/${memorylandTypeId}`,
@@ -129,8 +140,10 @@ export class WebapiService {
       .subscribe({
         "next": (configs) => {
           set((model) => {
-            model.memorylandConfigs = structuredClone(configs);
-            model.originalMemorylandConfigs = structuredClone(configs);
+            model.memorylandConfigs = structuredClone(configs)
+              .sort((a,b) =>
+                (a.position > b.position ? 1 : -1));
+            model.originalMemorylandConfigs = structuredClone(model.memorylandConfigs);
           });
         },
         "error": (err) => console.error(err),
@@ -200,7 +213,7 @@ export class WebapiService {
       });
   }
 
-  renameMemoryland(id: number, name: string) {
+  public renameMemoryland(id: number, name: string) {
     let renameModelDto: RenameModelDto = {
       oldId: id,
       newName: name
@@ -216,7 +229,7 @@ export class WebapiService {
       });
   }
 
-  renamePhoto(id: number, name: string) {
+  public renamePhoto(id: number, name: string) {
     let renameModelDto: RenameModelDto = {
       oldId: id,
       newName: name
@@ -232,7 +245,7 @@ export class WebapiService {
       });
   }
 
-  renamePhotoAlbum(id: number, name: string) {
+  public renamePhotoAlbum(id: number, name: string) {
     let renameModelDto: RenameModelDto = {
       oldId: id,
       newName: name
