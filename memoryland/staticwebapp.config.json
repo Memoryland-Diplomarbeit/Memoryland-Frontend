@@ -25,12 +25,8 @@
       "redirect": "/helpPage"
     },
     {
-      "route": "/login-failed",
+      "route": "/*",
       "redirect": "/login-failed"
-    },
-    {
-      "route": "/**",
-      "redirect": "/**"
     }
   ]
 }
