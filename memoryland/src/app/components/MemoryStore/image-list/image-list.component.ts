@@ -28,8 +28,8 @@ export class ImageListComponent {
       distinctUntilChanged()
     );
 
-  deleteImage() {
-
+  deleteImage(photo: Photo) {
+    this.webApi.deletePhoto(photo.id);
   }
 
   selectImage(i: Photo) {
