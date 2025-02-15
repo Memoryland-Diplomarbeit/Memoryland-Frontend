@@ -179,4 +179,14 @@ export class WebapiService {
         "error": (err) => console.error(err),
       });
   }
+
+  public deletePhotoAlbum(photoAlbumId: number){
+    this.httpClient.delete(
+      `${environment.apiConfig.uri}/api/PhotoAlbum/${photoAlbumId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": () => this.getPhotoAlbumsFromServer(),
+        "error": (err) => console.error(err),
+      });
+  }
 }
