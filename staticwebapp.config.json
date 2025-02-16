@@ -5,24 +5,8 @@
   },
   "routes": [
     {
-      "route": "/allWorlds",
-      "redirect": "/allWorlds"
-    },
-    {
-      "route": "/exploreWorlds",
-      "redirect": "/exploreWorlds"
-    },
-    {
-      "route": "/memoryStore",
-      "redirect": "/"
-    },
-    {
       "route": "/unity/index.html",
       "redirect": "/unity/index.html"
-    },
-    {
-      "route": "/login-failed",
-      "redirect": "/login-failed"
     }
   ]
 }
