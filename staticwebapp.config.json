@@ -1,4 +1,8 @@
 {
+  "navigationFallback": {
+    "rewrite": "/",
+    "exclude": ["*.{png,jpg,jpeg,gif,ico,css,scss,svg,js}"]
+  },
   "routes": [
     {
       "route": "/allWorlds",
