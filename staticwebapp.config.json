@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/allWorlds",
-      "redirect": "/allWorlds"
+      "rewrite": "/allWorlds"
     },
     {
       "route": "/exploreWorlds",
