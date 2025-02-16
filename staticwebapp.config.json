@@ -1,8 +1,8 @@
 {
   "routes": [
     {
-      "route": "/allWorlds",
-      "rewrite": "/allWorlds"
+      "route": "/*",
+      "rewrite": "/"
     },
     {
       "route": "/unity/index.html",
