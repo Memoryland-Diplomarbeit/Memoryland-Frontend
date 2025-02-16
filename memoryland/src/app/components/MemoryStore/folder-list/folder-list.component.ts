@@ -22,7 +22,9 @@ export class FolderListComponent {
   }
 
   protected folders = store.pipe(
-    map(model => model.photoAlbums),
+    map(model => model.photoAlbums
+      .filter(album => album.name
+        .includes(model.searchAlbumList))),
     distinctUntilChanged()
   );
 
@@ -62,4 +64,15 @@ export class FolderListComponent {
   }
 
   protected readonly store = store;
+
+  setAlbumSearch(val: string) {
+    set(model => {
+      model.searchAlbumList = val;
+
+      if (model.selectedPhotoAlbum !== undefined &&
+        !model.selectedPhotoAlbum.name.includes(model.searchAlbumList)) {
+        model.selectedPhotoAlbum = undefined;
+      }
+    });
+  }
 }
