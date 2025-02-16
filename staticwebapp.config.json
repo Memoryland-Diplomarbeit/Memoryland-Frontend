@@ -1,10 +1,6 @@
 {
   "routes": [
     {
-      "route": "/*",
-      "rewrite": "/"
-    },
-    {
       "route": "/unity/index.html",
       "redirect": "/unity/index.html"
     }
