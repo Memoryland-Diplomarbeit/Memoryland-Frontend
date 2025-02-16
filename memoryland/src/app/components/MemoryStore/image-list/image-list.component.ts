@@ -16,7 +16,10 @@ import {WebapiService} from '../../../services/webapi.service';
 })
 export class ImageListComponent {
   protected images = store.pipe(
-    map(model => model.selectedPhotoAlbum?.photos),
+    map(model =>
+      model.selectedPhotoAlbum?.photos
+        .filter(photo => photo.name
+          .includes(model.searchImgList))),
     distinctUntilChanged()
   );
 
@@ -77,6 +80,12 @@ export class ImageListComponent {
         renamePhoto.name
       );
     }
+  }
+
+  setImgSearch(val: string) {
+    set(model => {
+      model.searchImgList = val;
+    });
   }
 
   protected readonly store = store;
