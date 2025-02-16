@@ -16,39 +16,65 @@
       }
     </select>
 
-    <!-- Display Photos from Album -->
-    <div class="row text-center d-flex justify-content-center align-items-center">
-      @for (photo of selectedPhotos; track photo.id) {
-        <div
-          class="col-4 p-1 mt-3 border d-flex justify-content-center align-items-center img-box word-break"
-          draggable="true"
-          (dragstart)="onDragStart($event, photo)">
-          {{ photo.name }}
+    <div class="drag-and-drop-container">
+      <div class="img-drag-and-drop-height-with-search">
+        <div class="mt-3 d-flex justify-content-center mb-3">
+          <form class="d-flex" role="search">
+            <input
+              #searchConfigInput
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              [value]="store.value.searchConfigList"
+              (keyup)="setConfigSearch(searchConfigInput.value)">
+          </form>
         </div>
-      }
-    </div>
 
-    <!-- Photo Album Grid -->
-    <div class="row mt-3 overflow-scroll drag-and-drop-height">
-      <h5>Ordne die Fotos den Positionen zu (mittels Drag-and-Drop):</h5>
-      @for (slot of generateArray(selectedMemoryland!.memorylandType.photoAmount); track slot) {
-        <div class="col-4 border text-center img-box word-break p-1"
-             (dragover)="onDragOver($event)"
-             (drop)="onDrop($event, slot)">
-          @if (getConfigForPos(slot) === undefined) {
-            <div class="placeholder text-center d-flex justify-content-center align-items-center">
-              Pos {{slot}}
-            </div>
+        <!-- Display Photos from Album -->
+        <div class="overflow-scroll img-drag-and-drop-height gx-0 row text-center d-flex justify-content-center align-items-center">
+          @if (getPhotos().length > 0) {
+            @for (photo of getPhotos(); track photo.id) {
+              <div
+                class="col-3 p-1 border d-flex justify-content-center align-items-center img-box word-break"
+                draggable="true"
+                (dragstart)="onDragStart($event, photo)">
+                {{ photo.name }}
+              </div>
+            }
           } @else {
-            <p
-              class="text-center d-flex justify-content-center align-items-center h-100"
-              draggable="true"
-              (dragstart)="onDragStartConf($event, getConfigForPos(slot))">
-              {{getConfigForPos(slot)!.photo.name}}
-            </p>
+            <div class="fs-5 text-center text-muted">
+              Keine Fotos gefunden
+            </div>
           }
         </div>
-      }
+      </div>
+
+      <!-- Photo Album Grid -->
+      <div class="mt-3">
+        <h5>Ordne die Fotos den Positionen zu (mittels Drag-and-Drop):</h5>
+
+        <div class="drag-and-drop-height row d-flex justify-content-center">
+          @for (slot of generateArray(selectedMemoryland!.memorylandType.photoAmount); track slot) {
+            <div class="col-3 border text-center img-box word-break p-1"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDrop($event, slot)">
+              @if (getConfigForPos(slot) === undefined) {
+                <div class="placeholder text-center d-flex justify-content-center align-items-center">
+                  Pos {{slot}}
+                </div>
+              } @else {
+                <p
+                  class="text-center d-flex justify-content-center align-items-center h-100"
+                  draggable="true"
+                  (dragstart)="onDragStartConf($event, getConfigForPos(slot))">
+                  {{getConfigForPos(slot)!.photo.name}}
+                </p>
+              }
+            </div>
+          }
+        </div>
+      </div>
     </div>
   </div>
 }

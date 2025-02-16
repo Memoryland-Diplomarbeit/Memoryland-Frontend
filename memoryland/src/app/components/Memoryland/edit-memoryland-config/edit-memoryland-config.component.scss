@@ -7,9 +7,27 @@
   border: 2px dashed #ccc;
 }
 
-.drag-and-drop-height {
-  max-height: 40vh;
-  min-height: 25vh;
+.drag-and-drop-container {
+  display: flex;
+  flex-direction: column;
+
+  .img-drag-and-drop-height-with-search {
+    display: flex;
+    flex-direction: column;
+    max-height: 25vh;
+  }
+
+  .img-drag-and-drop-height {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+
+  .drag-and-drop-height {
+    overflow-y: auto;
+    max-height: 30vh;
+    min-height: 0;
+    flex-grow: 1;
+  }
 }
 
 .img-box {
