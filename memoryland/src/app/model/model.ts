@@ -29,6 +29,10 @@ export interface Model {
   renameMemoryland: RenameModel<Memoryland>;
   renamePhoto: RenameModel<Photo>;
   renamePhotoAlbum: RenameModel<PhotoAlbum>;
+  searchImgList: string;
+  searchAlbumList: string;
+  searchMemorylandList: string;
+  searchConfigList: string;
 }
 
 const initialState: Model = {
@@ -64,7 +68,11 @@ const initialState: Model = {
   renamePhotoAlbum: {
     renameObj: undefined,
     name: ""
-  }
+  },
+  searchImgList: "",
+  searchAlbumList: "",
+  searchMemorylandList: "",
+  searchConfigList: ""
 };
 
 export const store = new BehaviorSubject<Model>(initialState);

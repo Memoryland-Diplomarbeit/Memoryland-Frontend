@@ -18,6 +18,12 @@ export class EditMemorylandConfigComponent implements OnInit {
   selectedPhotoAlbumId: string = "";
   selectedPhotos: Photo[] = [];
 
+  getPhotos(): Photo[] {
+    return this.selectedPhotos
+      .filter(photo =>
+        photo.name.includes(store.value.searchConfigList));
+  }
+
   ngOnInit(): void {
     this.store.pipe(
       map(model => model.photoAlbums),
@@ -89,5 +95,11 @@ export class EditMemorylandConfigComponent implements OnInit {
   getConfigForPos(slot: number) {
     return this.memorylandConfigs
       .find(c => c.position === slot);
+  }
+
+  setConfigSearch(val: string) {
+    set(model => {
+      model.searchConfigList = val;
+    });
   }
 }

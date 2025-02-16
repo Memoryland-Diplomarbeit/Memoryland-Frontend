@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {AsyncPipe} from "@angular/common";
 import {HoverClassDirective} from "../../../directives/hover-class.directive";
 import {distinctUntilChanged, map} from 'rxjs';
-import {Memoryland, PhotoAlbum, set, store} from '../../../model';
+import {Memoryland, set, store} from '../../../model';
 import {EditMemorylandConfigComponent} from '../edit-memoryland-config/edit-memoryland-config.component';
 import {WebapiService} from '../../../services/webapi.service';
 import {RouterLink} from '@angular/router';
@@ -22,7 +22,9 @@ export class MemorylandListComponent {
   private webApi = inject(WebapiService);
 
   protected memorylands = store.pipe(
-    map(model => model.memorylands),
+    map(model => model.memorylands
+      .filter(memoryland => memoryland.name
+        .includes(model.searchMemorylandList))),
     distinctUntilChanged()
   );
 
@@ -114,5 +116,11 @@ export class MemorylandListComponent {
         renameMemoryland.name
       );
     }
+  }
+
+  setMemorylandSearch(val: string) {
+    set(model => {
+      model.searchMemorylandList = val;
+    });
   }
 }
