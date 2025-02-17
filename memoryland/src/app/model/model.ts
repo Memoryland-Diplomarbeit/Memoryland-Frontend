@@ -36,9 +36,13 @@ export interface Model {
   username: string;
   uploadAlbumModel: UploadAlbumModel;
   transaction: Transaction | undefined;
+  totalPhotos: number;
+  finishedPhotos: number;
 }
 
 const initialState: Model = {
+  finishedPhotos: 0,
+  totalPhotos: 0,
   selectedMemoryland: undefined,
   selectedMemorylandType: undefined,
   memorylandTypes: [],

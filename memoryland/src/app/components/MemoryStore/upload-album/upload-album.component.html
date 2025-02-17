@@ -95,6 +95,8 @@
       [disabled]="uploadAlbumNotValid()"
       (click)="uploadFolderSvc.startUploadAlbum()"
       class="btn btn-success"
+      data-bs-toggle="modal"
+      data-bs-target="#album-upload-progress-bar-modal"
       data-bs-dismiss="modal">
       Foto hochladen
     </button>

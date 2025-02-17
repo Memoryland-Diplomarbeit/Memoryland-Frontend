@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {MemoryStoreService} from './memory-store.service';
-import {store, UploadPhotoModel} from '../model';
+import {set, store, UploadPhotoModel} from '../model';
 import {WebapiService} from './webapi.service';
 import {ToastService} from './toast.service';
 
@@ -18,6 +18,11 @@ export class UploadFolderService {
   private memoryStoreSvc = inject(MemoryStoreService);
 
   startUploadAlbum() {
+    set(model => {
+      model.totalPhotos = store.value.uploadAlbumModel.files.length;
+      model.finishedPhotos = 0;
+    });
+
     if (store.value.uploadAlbumModel.useTransaction) {
       this.webApi.postTransaction(() => {
         this.uploadAlbum().then(() => {
@@ -63,6 +68,10 @@ export class UploadFolderService {
           // @ts-ignore
           errors.push(`<br><b>Fehler bei ${uploadPhotoModel.fileName}:</b><br>${err?.message}: ${err?.error}`);
         }
+
+        set(model => {
+          model.finishedPhotos++;
+        });
       }
     }
 
@@ -80,6 +89,11 @@ export class UploadFolderService {
         'error'
       );
     }
+
+    set(model => {
+      model.totalPhotos = 0;
+      model.finishedPhotos = 0;
+    });
   }
 
   private uploadPhoto(uploadPhotoModel: UploadPhotoModel): Promise<void> {

@@ -36,6 +36,12 @@ export class MemoryStorePageComponent implements OnInit{
       distinctUntilChanged()
     );
 
+  protected readonly canUploadAlbum = store
+    .pipe(
+      map(model => model.totalPhotos !== model.finishedPhotos),
+      distinctUntilChanged()
+    );
+
   ngOnInit() {
     this.photoAlbums.subscribe(p => {
       if (store.value.uploadPhotoModel.selectedAlbumId === undefined &&

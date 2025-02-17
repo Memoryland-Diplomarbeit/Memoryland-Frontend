@@ -20,7 +20,8 @@
         class="btn btn-light w-100 text-start"
         type="button"
         data-bs-toggle="modal"
-        data-bs-target="#upload-photoAlbum-modal">
+        data-bs-target="#upload-photoAlbum-modal"
+        [disabled]="(canUploadAlbum | async)">
         Album hochladen ...
       </button>
     </div>
@@ -209,6 +210,65 @@
           data-bs-toggle="modal"
           data-bs-target="#upload-photoAlbum-modal">
           Fortfahren
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="album-upload-progress-bar-modal"
+  tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Fortschritt...</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close">
+        </button>
+      </div>
+
+      <div class="modal-body">
+        @if (store.value.totalPhotos !== 0) {
+          <div class="progress">
+            <div class="progress-bar"
+                 role="progressbar"
+                 [style.width.%]="(store.value.finishedPhotos/ store.value.totalPhotos) * 100"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+              {{ store.value.finishedPhotos/store.value.totalPhotos * 100 }}%
+            </div>
+          </div>
+          <div class="mt-1">
+            {{ store.value.finishedPhotos }} / {{ store.value.totalPhotos }} Fotos
+          </div>
+        } @else {
+          <div class="progress">
+            <div class="progress-bar"
+                 role="progressbar"
+                 style="width: 100%"
+                 aria-valuenow="100"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+              100%
+            </div>
+          </div>
+          <div class="mt-1">
+            Alle Fotos hochgeladen
+          </div>
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn-info"
+          data-bs-dismiss="modal">
+          Exit
         </button>
       </div>
     </div>
