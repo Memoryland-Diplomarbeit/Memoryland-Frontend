@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {set, store} from '../../../model';
 import {UploadFolderService} from '../../../services/upload-folder.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {distinctUntilChanged, map} from 'rxjs';
+import {distinctUntilChanged, filter, map} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 
 @Component({
@@ -32,6 +32,11 @@ export class UploadAlbumComponent implements OnInit {
   protected readonly useResumableUpload = store
     .pipe(
       map(model => model.uploadAlbumModel.useTransaction),
+      distinctUntilChanged()
+    );
+  protected readonly isResumableUpload = store
+    .pipe(
+      map(model => model.useResumableUpload),
       distinctUntilChanged()
     );
 
@@ -68,8 +73,18 @@ export class UploadAlbumComponent implements OnInit {
 
     if (input.files) {
       const files = Array.from(input.files);
-      const filteredFiles = files.filter(file =>
+      let filteredFiles = files.filter(file =>
         file.webkitRelativePath.split('/').length === 2);
+
+      if (store.value.transaction !== undefined) {
+        const transaction = store.value.transaction;
+
+        filteredFiles = filteredFiles
+          .filter(f => transaction
+            .destAlbum
+            .photos
+            .find(p => p.name === f.name) === undefined);
+      }
 
       set(model => {
         model.uploadAlbumModel.files = filteredFiles.filter(file => {
@@ -114,5 +129,11 @@ export class UploadAlbumComponent implements OnInit {
 
   unsetUseTransaction() {
     this.setUseTransaction(false);
+  }
+
+  unsetUseResumableUpload() {
+    set(model => {
+      model.useResumableUpload = false;
+    });
   }
 }

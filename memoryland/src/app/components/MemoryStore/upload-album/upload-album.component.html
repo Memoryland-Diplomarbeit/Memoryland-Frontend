@@ -4,7 +4,8 @@
     type="button"
     class="btn-close"
     data-bs-dismiss="modal"
-    aria-label="Close">
+    aria-label="Close"
+    (click)="unsetUseResumableUpload()">
   </button>
 </div>
 
@@ -18,7 +19,8 @@
               (change)="setAlbum(albumSelect.value)"
               name="selectedAlbum"
               required
-              [selectedIndex]="(uploadPhotoPhotoAlbumIndex | async)">
+              [selectedIndex]="(uploadPhotoPhotoAlbumIndex | async)"
+              [disabled]="(isResumableUpload | async)">
         @for (pa of (photoAlbums | async); track pa.id) {
           <option [value]="pa.id">{{ pa.name }}</option>
         }
@@ -49,7 +51,7 @@
 
     <!-- use transaction input -->
     <div class="mb-2">
-      @if (!(useResumableUpload | async) && store.value.transaction !== undefined) {
+      @if (!(useResumableUpload | async) && store.value.transaction !== undefined && !(isResumableUpload | async)) {
         <div
           class="form-check"
           type="button"
@@ -73,7 +75,8 @@
             type="checkbox"
             [checked]="(useResumableUpload | async)"
             (change)="setUseTransaction(checkBoxInput.checked)"
-            id="flexCheckDefault2">
+            id="flexCheckDefault2"
+            [disabled]="(isResumableUpload | async)">
           <label class="form-check-label" for="flexCheckDefault2">
             Resumable Uploads ermöglichen
           </label>
@@ -86,7 +89,8 @@
     <button
       type="button"
       class="btn btn-secondary"
-      data-bs-dismiss="modal">
+      data-bs-dismiss="modal"
+      (click)="unsetUseResumableUpload()">
       Cancel
     </button>
 

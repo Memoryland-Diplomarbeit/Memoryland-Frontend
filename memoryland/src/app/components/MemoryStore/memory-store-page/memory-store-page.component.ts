@@ -42,6 +42,12 @@ export class MemoryStorePageComponent implements OnInit{
       distinctUntilChanged()
     );
 
+  protected readonly canResumeUpload = store
+    .pipe(
+      map(model => model.transaction === undefined),
+      distinctUntilChanged()
+    );
+
   ngOnInit() {
     this.photoAlbums.subscribe(p => {
       if (store.value.uploadPhotoModel.selectedAlbumId === undefined &&
@@ -109,5 +115,19 @@ export class MemoryStorePageComponent implements OnInit{
     });
 
     this.webApi.removeTransaction();
+  }
+
+  getPercentage(): number {
+    return Math.floor(
+      store.value.finishedPhotos/store.value.totalPhotos *
+      100 * 100)/100;
+  }
+
+  setResumableUpload() {
+    set(model => {
+      model.uploadAlbumModel.useTransaction = true;
+      model.useResumableUpload = true;
+      model.uploadAlbumModel.selectedAlbumId = model.transaction!.destAlbum.id;
+    });
   }
 }

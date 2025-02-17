@@ -24,6 +24,14 @@
         [disabled]="(canUploadAlbum | async)">
         Album hochladen ...
       </button>
+      <button
+        class="btn btn-light w-100 text-start"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#resume-upload-photoAlbum-modal"
+        [disabled]="(canResumeUpload | async)">
+        Resume upload ...
+      </button>
     </div>
   </div>
 
@@ -241,7 +249,7 @@
                  [style.width.%]="(store.value.finishedPhotos/ store.value.totalPhotos) * 100"
                  aria-valuemin="0"
                  aria-valuemax="100">
-              {{ store.value.finishedPhotos/store.value.totalPhotos * 100 }}%
+              {{ getPercentage() }}%
             </div>
           </div>
           <div class="mt-1">
@@ -271,6 +279,57 @@
           Exit
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="resume-upload-photoAlbum-modal"
+  tabindex="-1"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Resumable Upload fortfahren</h1>
+      </div>
+
+      <div class="modal-body">
+        Möchten Sie ihren letzten Upload fortsetzen?
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button
+          (click)="setResumableUpload()"
+          class="btn btn-success"
+          data-bs-dismiss="modal"
+          data-bs-toggle="modal"
+          data-bs-target="#upload-photoAlbum-modal-resumable">
+          Fortfahren
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="upload-photoAlbum-modal-resumable"
+  tabindex="-1"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <app-upload-album></app-upload-album>
     </div>
   </div>
 </div>
