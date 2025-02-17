@@ -5,16 +5,17 @@
     @for (toast of store.value.toastModel.toasts;
       track toast.id) {
       <div
-        class="toast"
+        class="toast bg-white"
         role="alert"
         aria-live="assertive"
-        aria-atomic="true"
-        [ngClass]="{
-          'text-bg-success': toast.type === 'success',
-          'text-bg-info': toast.type === 'info',
-          'text-bg-danger': toast.type === 'error'
-        }">
-        <div class="toast-header">
+        aria-atomic="true">
+        <div
+          class="toast-header"
+          [ngClass]="{
+            'text-bg-success': toast.type === 'success',
+            'text-bg-info': toast.type === 'info',
+            'text-bg-danger': toast.type === 'error'
+          }">
           <strong class="me-auto">{{ toast.title }}</strong>
           <button
             type="button"
@@ -23,7 +24,7 @@
             aria-label="Close"></button>
         </div>
         <div class="toast-body">
-          {{ toast.message }}
+          <p [innerHTML]="toast.message"></p>
         </div>
       </div>
     }

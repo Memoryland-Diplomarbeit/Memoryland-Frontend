@@ -6,7 +6,7 @@ import {
   ToastModel,
   UploadPhotoModel,
   SelectedPhoto,
-  MemorylandType, MemorylandConfig, RenameModel, Photo
+  MemorylandType, MemorylandConfig, RenameModel, Photo, UploadAlbumModel, Transaction
 } from './index';
 
 
@@ -34,6 +34,8 @@ export interface Model {
   searchMemorylandList: string;
   searchConfigList: string;
   username: string;
+  uploadAlbumModel: UploadAlbumModel;
+  transaction: Transaction | undefined;
 }
 
 const initialState: Model = {
@@ -74,7 +76,13 @@ const initialState: Model = {
   searchAlbumList: "",
   searchMemorylandList: "",
   searchConfigList: "",
-  username: ""
+  username: "",
+  uploadAlbumModel: {
+    useTransaction: false,
+    selectedAlbumId: undefined,
+    files: []
+  },
+  transaction: undefined
 };
 
 export const store = new BehaviorSubject<Model>(initialState);

@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
-import {set, store} from '../model';
+import {set, store, UploadPhotoModel} from '../model';
 import {WebapiService} from './webapi.service';
 import {ToastService} from './toast.service';
 
@@ -41,7 +41,7 @@ export class MemoryStoreService {
   }
 
   uploadPhoto() {
-    if (!this.uploadPhotoNotValid()) {
+    if (!this.uploadPhotoNotValid(undefined)) {
       const uploadPhotoModel = store
         .value
         .uploadPhotoModel;
@@ -96,12 +96,20 @@ export class MemoryStoreService {
       .some(char => source.includes(char));
   }
 
-  uploadPhotoNotValid() {
-    return store.value.uploadPhotoModel.fileName === '' ||
-      store.value.uploadPhotoModel.selectedAlbumId === undefined ||
-      store.value.photoAlbums.filter(pa =>
-        pa.id === store.value.uploadPhotoModel.selectedAlbumId)
-        .length === 0 ||
-      store.value.uploadPhotoModel.file === undefined;
+  uploadPhotoNotValid(model: UploadPhotoModel | undefined) {
+    if (model === undefined) {
+      return store.value.uploadPhotoModel.fileName === '' ||
+        store.value.uploadPhotoModel.selectedAlbumId === undefined ||
+        store.value.photoAlbums.filter(pa =>
+          pa.id === store.value.uploadPhotoModel.selectedAlbumId)
+          .length === 0 ||
+        store.value.uploadPhotoModel.file === undefined;
+    } else {
+      return model.fileName === '' ||
+        model.selectedAlbumId === undefined ||
+        store.value.photoAlbums.filter(pa =>
+          pa.id === model.selectedAlbumId).length === 0 ||
+        model.file === undefined;
+    }
   }
 }

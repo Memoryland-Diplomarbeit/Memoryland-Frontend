@@ -39,6 +39,7 @@ export class AppComponent implements OnInit{
         this.webApi.getPhotoAlbumsFromServer();
         this.webApi.getMemorylandsFromServer();
         this.webApi.getMemorylandTypesFromServer();
+        this.webApi.getTransaction();
       },
       () => {
         set(model => {

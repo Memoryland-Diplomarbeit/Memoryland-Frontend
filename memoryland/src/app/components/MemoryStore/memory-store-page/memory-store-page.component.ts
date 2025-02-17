@@ -5,18 +5,22 @@ import {set, store} from '../../../model';
 import {distinctUntilChanged, map} from 'rxjs';
 import {MemoryStoreService} from '../../../services/memory-store.service';
 import {AsyncPipe} from '@angular/common';
+import {UploadAlbumComponent} from '../upload-album/upload-album.component';
+import {WebapiService} from '../../../services/webapi.service';
 
 @Component({
   selector: 'app-memory-store-page',
   imports: [
     FolderListComponent,
     ImageListComponent,
-    AsyncPipe
+    AsyncPipe,
+    UploadAlbumComponent
   ],
   templateUrl: './memory-store-page.component.html',
   styleUrl: './memory-store-page.component.scss'
 })
 export class MemoryStorePageComponent implements OnInit{
+  protected readonly webApi = inject(WebapiService);
   protected readonly memoryStoreSvc = inject(MemoryStoreService);
   protected readonly store = store;
   protected readonly photoAlbums = store
@@ -93,4 +97,11 @@ export class MemoryStorePageComponent implements OnInit{
     }
   }
 
+  setUseTransaction() {
+    set(model => {
+      model.uploadAlbumModel.useTransaction = true;
+    });
+
+    this.webApi.removeTransaction();
+  }
 }

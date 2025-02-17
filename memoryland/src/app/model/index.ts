@@ -3,6 +3,8 @@ export * from './entity/MemoryStore/PhotoAlbum';
 export * from './entity/MemoryStore/UploadPhotoModel';
 export * from './entity/MemoryStore/SelectedPhoto';
 export * from './entity/MemoryStore/Photo';
+export * from './entity/MemoryStore/Transaction';
+export * from './entity/MemoryStore/UploadAlbumModel';
 export * from './entity/Memoryland/Memoryland';
 export * from './entity/Memoryland/MemorylandType';
 export * from './entity/Memoryland/MemorylandConfig';

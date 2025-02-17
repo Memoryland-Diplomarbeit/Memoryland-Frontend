@@ -1,0 +1,102 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5">Album hochladen</h1>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="modal"
+    aria-label="Close">
+  </button>
+</div>
+
+<form>
+  <div class="modal-body">
+    <!-- album selection -->
+    <div class="mb-3">
+      <label class="form-label">Ziel-Album auswählen</label>
+      <select #albumSelect
+              class="form-select"
+              (change)="setAlbum(albumSelect.value)"
+              name="selectedAlbum"
+              required
+              [selectedIndex]="(uploadPhotoPhotoAlbumIndex | async)">
+        @for (pa of (photoAlbums | async); track pa.id) {
+          <option [value]="pa.id">{{ pa.name }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- folder selection -->
+    <div class="mb-4">
+      <label class="form-label">
+        Album auswählen
+      </label>
+      <input
+        type="file"
+        id="imageFolder"
+        name="images"
+        webkitdirectory
+        multiple
+        class="form-control"
+        (change)="onFolderSelected($event)"/>
+    </div>
+
+    <!-- folder selection images output-->
+    <div class="mb-4">
+      <label class="">
+        Anzahl ausgewählter Bilder: {{ store.value.uploadAlbumModel.files.length }}
+      </label>
+    </div>
+
+    <!-- use transaction input -->
+    <div class="mb-2">
+      @if (!(useResumableUpload | async) && store.value.transaction !== undefined) {
+        <div
+          class="form-check"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#ask-for-delete-transaction-modal"
+          data-bs-dismiss="modal">
+          <input
+            class="form-check-input unclickable"
+            type="checkbox"
+            [checked]="(useResumableUpload | async)"
+            id="flexCheckDefault">
+          <label class="form-check-label unclickable" for="flexCheckDefault">
+            Resumable Uploads ermöglichen
+          </label>
+        </div>
+      } @else {
+        <div class="form-check">
+          <input
+            #checkBoxInput
+            class="form-check-input"
+            type="checkbox"
+            [checked]="(useResumableUpload | async)"
+            (change)="setUseTransaction(checkBoxInput.checked)"
+            id="flexCheckDefault2">
+          <label class="form-check-label" for="flexCheckDefault2">
+            Resumable Uploads ermöglichen
+          </label>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal">
+      Cancel
+    </button>
+
+    <button
+      type="button"
+      [disabled]="uploadAlbumNotValid()"
+      (click)="uploadFolderSvc.startUploadAlbum()"
+      class="btn btn-success"
+      data-bs-dismiss="modal">
+      Foto hochladen
+    </button>
+  </div>
+</form>

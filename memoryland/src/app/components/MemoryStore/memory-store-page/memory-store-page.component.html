@@ -16,13 +16,13 @@
         data-bs-target="#upload-photo-modal">
         Foto hochladen ...
       </button>
-      <!--
       <button
         class="btn btn-light w-100 text-start"
-        (click)="uploadAlbum()">
-        Upload Album ...
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#upload-photoAlbum-modal">
+        Album hochladen ...
       </button>
-      -->
     </div>
   </div>
 
@@ -122,7 +122,7 @@
 
           <!-- file selection -->
           <div class="mb-3">
-            <label class="form-label">Select File</label>
+            <label class="form-label">Foto auswählen</label>
             <input
               type="file"
               class="form-control"
@@ -152,7 +152,7 @@
 
           <button
             type="button"
-            [disabled]="memoryStoreSvc.uploadPhotoNotValid()"
+            [disabled]="memoryStoreSvc.uploadPhotoNotValid(undefined)"
             (click)="memoryStoreSvc.uploadPhoto()"
             class="btn btn-success"
             data-bs-dismiss="modal">
@@ -160,6 +160,57 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="upload-photoAlbum-modal"
+  tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <app-upload-album></app-upload-album>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="ask-for-delete-transaction-modal"
+  tabindex="-1"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Es ist bereits ein Resumable Upload offen!</h1>
+      </div>
+
+      <div class="modal-body">
+        Falls du fortfährst, wird der aktuelle Upload abgebrochen.
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          data-bs-toggle="modal"
+          data-bs-target="#upload-photoAlbum-modal">
+          Cancel
+        </button>
+
+        <button
+          (click)="setUseTransaction()"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          data-bs-toggle="modal"
+          data-bs-target="#upload-photoAlbum-modal">
+          Fortfahren
+        </button>
+      </div>
     </div>
   </div>
 </div>

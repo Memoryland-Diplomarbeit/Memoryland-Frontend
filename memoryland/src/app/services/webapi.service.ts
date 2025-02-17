@@ -1,6 +1,15 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Memoryland, MemorylandConfig, MemorylandType, PhotoAlbum, RenameModelDto, SelectedPhoto} from '../model';
+import {
+  Memoryland,
+  MemorylandConfig,
+  MemorylandType,
+  PhotoAlbum,
+  RenameModelDto,
+  SelectedPhoto,
+  store,
+  Transaction
+} from '../model';
 import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
@@ -37,6 +46,16 @@ export class WebapiService {
                   pa.id === model.selectedPhotoAlbum!.id)[0];
             } else if (model.photoAlbums.length > 0) {
               model.selectedPhotoAlbum = model.photoAlbums[0];
+            }
+
+            if (model.uploadPhotoModel.selectedAlbumId === undefined) {
+              model.uploadPhotoModel.selectedAlbumId = model
+                .photoAlbums[0].id;
+            }
+
+            if (model.uploadAlbumModel.selectedAlbumId === undefined) {
+              model.uploadAlbumModel.selectedAlbumId = model
+                .photoAlbums[0].id;
             }
           });
         },
@@ -343,5 +362,77 @@ export class WebapiService {
           );
         },
       });
+  }
+
+  public removeTransaction() {
+    if (store.value.transaction !== undefined) {
+      this.httpClient.delete(
+        `${environment.apiConfig.uri}/api/Upload/transaction/${store.value.transaction.id}`,
+        {headers: this.headers})
+        .subscribe({
+          "next": () => this.getTransaction(),
+          "error": (err) => {
+            this.toastSvc.addToast(
+              'Fehler beim löschen der Transaction!',
+              err.message + ":\n" + err.error,
+              'error'
+            );
+
+            set((model) => {
+              model.uploadAlbumModel.useTransaction = false;
+            });
+          },
+        });
+    }
+  }
+
+  public getTransaction() {
+    this.httpClient.get<Transaction[]>(
+      `${environment.apiConfig.uri}/api/Upload/transaction`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (transactions) => {
+          if (transactions.length > 0) {
+            set((model) => {
+              model.transaction = transactions[0];
+            });
+          } else {
+            set((model) => {
+              model.transaction = undefined;
+            });
+          }
+        },
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen des Resumable-Uploads!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public postTransaction(func: () => void | undefined) {
+    this.httpClient
+      .post(
+        `${environment.apiConfig.uri}/api/Upload/transaction`,
+        {
+          "destAlbumId": store.value
+            .uploadAlbumModel.selectedAlbumId,
+        },
+        {headers: this.headers}
+      ).subscribe({
+      "next": () => {
+        if (func !== undefined)
+          func();
+      },
+      "error": (err) => {
+        this.toastSvc.addToast(
+          'Fehler beim speichern des Resumable Uploads!',
+          err.message + ":\n" + err.error,
+          'error'
+        );
+      },
+    });
   }
 }
