@@ -16,9 +16,9 @@ export const routes: Routes = [
     title: 'Overview'
   },
   {
-    path: 'about',
+    path: 'impressum',
     component: AboutPageComponent,
-    title: 'About Everything Page'
+    title: 'Impressum & Nutzungsbedingungen'
   },
   {
     path: 'allWorlds',
