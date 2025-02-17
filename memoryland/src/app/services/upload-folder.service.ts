@@ -23,19 +23,26 @@ export class UploadFolderService {
       model.finishedPhotos = 0;
     });
 
-    if (store.value.uploadAlbumModel.useTransaction) {
+    if (store.value.uploadAlbumModel.useTransaction && !store.value.useResumableUpload) {
       this.webApi.postTransaction(() => {
         this.uploadAlbum().then(() => {
-          this.webApi.getPhotoAlbumsFromServer();
-          this.webApi.removeTransaction();
+          this.finishUploadAlbum();
         });
       });
     } else {
       this.uploadAlbum().then(() => {
-        this.webApi.getPhotoAlbumsFromServer();
-        this.webApi.removeTransaction();
+        this.finishUploadAlbum();
       });
     }
+  }
+
+  private finishUploadAlbum() {
+    this.webApi.getPhotoAlbumsFromServer();
+    this.webApi.removeTransaction();
+
+    set(model => {
+      model.useResumableUpload = false;
+    });
   }
 
   async uploadAlbum() {

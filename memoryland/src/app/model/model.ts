@@ -38,9 +38,11 @@ export interface Model {
   transaction: Transaction | undefined;
   totalPhotos: number;
   finishedPhotos: number;
+  useResumableUpload: boolean;
 }
 
 const initialState: Model = {
+  useResumableUpload: false,
   finishedPhotos: 0,
   totalPhotos: 0,
   selectedMemoryland: undefined,
