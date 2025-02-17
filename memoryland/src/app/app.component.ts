@@ -27,6 +27,12 @@ export class AppComponent implements OnInit{
   protected webApi = inject(WebapiService);
   protected msalAuthSvc = inject(MsalAuthService);
 
+  protected userName = store
+    .pipe(
+      map(model => model.username),
+      distinctUntilChanged()
+    )
+
   async ngOnInit() {
     await this.msalAuthSvc.initialize(
       () => {

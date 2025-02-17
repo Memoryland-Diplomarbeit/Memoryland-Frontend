@@ -33,6 +33,7 @@ export interface Model {
   searchAlbumList: string;
   searchMemorylandList: string;
   searchConfigList: string;
+  username: string;
 }
 
 const initialState: Model = {
@@ -72,7 +73,8 @@ const initialState: Model = {
   searchImgList: "",
   searchAlbumList: "",
   searchMemorylandList: "",
-  searchConfigList: ""
+  searchConfigList: "",
+  username: ""
 };
 
 export const store = new BehaviorSubject<Model>(initialState);

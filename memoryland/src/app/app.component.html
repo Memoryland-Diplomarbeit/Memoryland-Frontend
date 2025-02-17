@@ -54,14 +54,16 @@
 
     <!--profile-->
     <div
-      class="justify-content-end btn-group w-25 me-2"
+      class="justify-content-end btn-group  me-2"
       role="group">
-      <button
-        type="button"
-        class="btn btn-secondary"
-        (click)="msalAuthSvc.editProfile()">
-        Usernamen ändern
-      </button>
+      @if ((userName | async) !== '') {
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="msalAuthSvc.editProfile()">
+          {{(userName | async)}}
+        </button>
+      }
 
       @if (!msalAuthSvc.loggedIn) {
         <button

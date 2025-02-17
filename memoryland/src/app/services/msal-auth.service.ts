@@ -18,6 +18,7 @@ import {
 } from '@azure/msal-browser';
 import {environment} from '../../environments/environment';
 import {IdTokenClaimsWithPolicyId} from "../model/entity/authentication-authorization/IdTokenClainsWithPolicyId";
+import {set} from '../model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,12 @@ export class MsalAuthService implements OnDestroy {
       .subscribe(() => {
         this.checkAndSetActiveAccount();
         this.setLoggedIn();
+
+        set(model => {
+          model.username = this.authService
+            .instance
+            .getActiveAccount()?.name ?? '';
+        });
       });
 
     this.msalBroadcastService.msalSubject$
@@ -158,18 +165,17 @@ export class MsalAuthService implements OnDestroy {
       .instance
       .getActiveAccount();
 
-    if (
-      !activeAccount &&
-      this.loggedIn
-    ) {
+    if (this.loggedIn) {
       let accounts = this
         .authService
         .instance
         .getAllAccounts();
 
-      this.authService
-        .instance
-        .setActiveAccount(accounts[0]);
+      if (!activeAccount || accounts.length > 1) {
+        this.authService
+          .instance
+          .setActiveAccount(accounts[accounts.length - 1]);
+      }
     } else {
       this.setLoggedIn();
     }
@@ -195,7 +201,7 @@ export class MsalAuthService implements OnDestroy {
         .authority,
       scopes: [],
     };
-    this.login(editProfileFlowRequest)
+    this.login(editProfileFlowRequest);
   }
 
   public logout() {

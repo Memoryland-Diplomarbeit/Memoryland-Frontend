@@ -1,9 +1,9 @@
-.logo-style {
-  height: 4vh;
-  width: auto;
-}
-
 .navbar {
-  height: 6vh;
-}
+  height: 4rem;
 
+  .logo-style {
+    max-height: 2.5rem;
+    height: auto;
+    width: auto;
+  }
+}
