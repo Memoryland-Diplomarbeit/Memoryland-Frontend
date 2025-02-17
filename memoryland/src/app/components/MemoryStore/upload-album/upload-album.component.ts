@@ -121,8 +121,7 @@ export class UploadAlbumComponent implements OnInit {
   uploadAlbumNotValid(): boolean {
     const uploadAlbum = this.store.value.uploadAlbumModel;
 
-    return uploadAlbum.files.length === 0 ||
-      uploadAlbum.selectedAlbumId === undefined;
+    return uploadAlbum.selectedAlbumId === undefined;
   }
 
   protected readonly store = store;

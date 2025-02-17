@@ -42,6 +42,7 @@ export class UploadFolderService {
 
     set(model => {
       model.useResumableUpload = false;
+      model.uploadAlbumModel.useTransaction = false;
     });
   }
 

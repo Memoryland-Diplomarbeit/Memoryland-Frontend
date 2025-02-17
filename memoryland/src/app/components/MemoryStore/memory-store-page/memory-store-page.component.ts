@@ -7,6 +7,7 @@ import {MemoryStoreService} from '../../../services/memory-store.service';
 import {AsyncPipe} from '@angular/common';
 import {UploadAlbumComponent} from '../upload-album/upload-album.component';
 import {WebapiService} from '../../../services/webapi.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-memory-store-page',
@@ -22,6 +23,7 @@ import {WebapiService} from '../../../services/webapi.service';
 export class MemoryStorePageComponent implements OnInit{
   protected readonly webApi = inject(WebapiService);
   protected readonly memoryStoreSvc = inject(MemoryStoreService);
+  protected readonly toastSvc = inject(ToastService);
   protected readonly store = store;
   protected readonly photoAlbums = store
     .pipe(
@@ -49,6 +51,14 @@ export class MemoryStorePageComponent implements OnInit{
     );
 
   ngOnInit() {
+    if (store.value.transaction !== undefined) {
+      this.toastSvc.addToast(
+        'Ein Resumable-Upload ist vorhanden!',
+        `Der letzte Upload des Albums ${store.value.transaction.destAlbum.name} kann fortgesetzt werden.`,
+        'info'
+      );
+    }
+
     this.photoAlbums.subscribe(p => {
       if (store.value.uploadPhotoModel.selectedAlbumId === undefined &&
         p.length > 0) {
