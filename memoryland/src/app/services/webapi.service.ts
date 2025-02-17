@@ -35,6 +35,8 @@ export class WebapiService {
               model.selectedPhotoAlbum = photoAlbums
                 .filter(pa =>
                   pa.id === model.selectedPhotoAlbum!.id)[0];
+            } else if (model.photoAlbums.length > 0) {
+              model.selectedPhotoAlbum = model.photoAlbums[0];
             }
           });
         },
