@@ -18,6 +18,12 @@ export class UploadFolderService {
   private memoryStoreSvc = inject(MemoryStoreService);
 
   startUploadAlbum() {
+    this.toastSvc.addToast(
+      'Upload gestartet...',
+      'Der Upload der Fotos wurde gestartet! Bitte warten Sie, bis der Upload abgeschlossen ist und verlassen und reloaden Sie nicht die Website.',
+      'info'
+    );
+
     set(model => {
       model.totalPhotos = store.value.uploadAlbumModel.files.length;
       model.finishedPhotos = 0;
