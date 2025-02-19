@@ -25,6 +25,10 @@ export class WebapiService {
     .set('Accept', 'application/json');
 
   public getPhotoAlbumsFromServer(): void {
+    set(model => {
+      model.loadingAlbums = true;
+    });
+
     this.httpClient.get<PhotoAlbum[]>(
       `${environment.apiConfig.uri}/api/PhotoAlbum`,
       {headers: this.headers})
@@ -57,6 +61,8 @@ export class WebapiService {
               model.uploadAlbumModel.selectedAlbumId = model
                 .photoAlbums[0].id;
             }
+
+            model.loadingAlbums = false;
           });
         },
         "error": (err) => {
@@ -65,6 +71,10 @@ export class WebapiService {
             err.message + ":\n" + err.error,
             'error'
           );
+
+          set(model => {
+            model.loadingAlbums = false;
+          });
         },
       });
   }
@@ -105,6 +115,10 @@ export class WebapiService {
   }
 
   public getMemorylandsFromServer(): void {
+    set(model => {
+      model.loadingMemorylands = true;
+    });
+
     this.httpClient.get<Memoryland[]>(
       `${environment.apiConfig.uri}/api/Memoryland/all`,
       {headers: this.headers})
@@ -120,6 +134,8 @@ export class WebapiService {
                 .filter(m =>
                   m.id === model.selectedMemoryland!.id)[0];
             }
+
+            model.loadingMemorylands = false;
           });
         },
         "error": (err) => {
@@ -128,6 +144,10 @@ export class WebapiService {
             err.message + ":\n" + err.error,
             'error'
           );
+
+          set(model => {
+            model.loadingMemorylands = false;
+          });
         },
       });
   }

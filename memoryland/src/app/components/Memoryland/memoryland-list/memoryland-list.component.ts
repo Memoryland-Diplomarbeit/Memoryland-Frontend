@@ -28,6 +28,11 @@ export class MemorylandListComponent {
     distinctUntilChanged()
   );
 
+  protected memorylandsLoading = store.pipe(
+    map(model => model.loadingMemorylands),
+    distinctUntilChanged()
+  );
+
   selectMemoryland(m: Memoryland) {
     set(model => {
       model.selectedMemoryland = m;

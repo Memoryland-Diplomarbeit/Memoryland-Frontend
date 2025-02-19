@@ -39,6 +39,8 @@ export interface Model {
   totalPhotos: number;
   finishedPhotos: number;
   useResumableUpload: boolean;
+  loadingMemorylands: boolean;
+  loadingAlbums: boolean;
 }
 
 const initialState: Model = {
@@ -88,7 +90,9 @@ const initialState: Model = {
     selectedAlbumId: undefined,
     files: []
   },
-  transaction: undefined
+  transaction: undefined,
+  loadingMemorylands: false,
+  loadingAlbums: false
 };
 
 export const store = new BehaviorSubject<Model>(initialState);

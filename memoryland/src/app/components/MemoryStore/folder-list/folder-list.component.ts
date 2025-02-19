@@ -28,6 +28,11 @@ export class FolderListComponent {
     distinctUntilChanged()
   );
 
+  protected albumsLoading = store.pipe(
+    map(model => model.loadingAlbums),
+    distinctUntilChanged()
+  );
+
   selectAlbum(p: PhotoAlbum) {
     set(model => {
       model.selectedPhotoAlbum = p;

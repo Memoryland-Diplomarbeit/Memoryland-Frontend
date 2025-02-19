@@ -21,6 +21,14 @@
   </div>
 </div>
 
+@if ((albumsLoading | async)) {
+  <div class="text-center w-100 mb-2">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+}
+
 @if ((folders | async)?.length === 0) {
   <div class="fs-5 text-center text-muted">
     Keine Alben vorhanden

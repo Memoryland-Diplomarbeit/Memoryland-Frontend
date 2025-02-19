@@ -23,6 +23,14 @@
   </div>
 </div>
 
+@if ((memorylandsLoading | async)) {
+  <div class="text-center w-100 mb-2">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+}
+
 @if ((memorylands | async)?.length === 0) {
   <div class="fs-5 text-center text-muted">
     Keine Memorylands vorhanden
