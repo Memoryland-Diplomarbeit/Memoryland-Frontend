@@ -1,7 +1,9 @@
 {
   "navigationFallback": {
     "rewrite": "/",
-    "exclude": ["*.{png,jpg,jpeg,gif,ico,css,scss,svg,js}"]
+    "exclude": [
+      "*.{png,jpg,jpeg,gif,ico,css,scss,svg,js}"
+    ]
   },
   "routes": [
     {
@@ -9,7 +11,8 @@
       "redirect": "/unity/index.html"
     },
     {
-      "route": "/unity/Build/*",
+      "route": "/unity/Build/build.data",
+      "redirect": "/unity/Build/build.data",
       "headers": {
         "Cache-Control": "public, max-age=86400, immutable"
       }
