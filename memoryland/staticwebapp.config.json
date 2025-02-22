@@ -7,6 +7,12 @@
     {
       "route": "/unity/index.html",
       "redirect": "/unity/index.html"
+    },
+    {
+      "route": "/unity/Build/*",
+      "headers": {
+        "Cache-Control": "public, max-age=86400, immutable"
+      }
     }
   ]
 }
