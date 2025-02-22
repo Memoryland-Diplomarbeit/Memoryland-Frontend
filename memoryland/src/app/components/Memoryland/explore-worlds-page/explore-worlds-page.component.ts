@@ -23,7 +23,6 @@ export class ExploreWorldsPageComponent implements OnInit {
     .pipe(
       map(model => ({
         token: model.token,
-        pubToken: model.publicToken
       })),
       distinctUntilChanged(),
       debounceTime(1500)
@@ -49,10 +48,6 @@ export class ExploreWorldsPageComponent implements OnInit {
     this.token.subscribe(token => {
       let myToken = token.token;
 
-      if (token.pubToken !== undefined && token.pubToken !== "") {
-        myToken = token.pubToken;
-      }
-
       if (myToken !== null && myToken !== undefined && myToken !== "") {
         this.safeUrl = this.sanitizer
           .bypassSecurityTrustResourceUrl(`/unity/index.html?token=${myToken}&server=${environment.apiConfig.uri}`);
@@ -64,7 +59,9 @@ export class ExploreWorldsPageComponent implements OnInit {
 
   generatePublicKey() {
     if (store.value.selectedMemoryland !== undefined) {
-      this.webApi.getToken(store.value.selectedMemoryland.id, true);
+      this.webApi.generateNewPublicToken(
+        store.value.selectedMemoryland.id
+      );
     }
   }
 

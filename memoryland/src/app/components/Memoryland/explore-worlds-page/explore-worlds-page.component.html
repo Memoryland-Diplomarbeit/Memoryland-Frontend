@@ -15,7 +15,7 @@
         <h3>
           {{(selectedMemoryland | async)!.name}}
         </h3>
-        @if (store.value.publicToken !== "" && safeUrl !== null) {
+        @if (store.value.token !== "" && safeUrl !== null) {
           <div class="input-group w-25">
             <input
               type="text"
@@ -36,7 +36,7 @@
           type="button"
           data-bs-toggle="modal"
           data-bs-target="#ask-generate-public-link-modal">
-          Public Link für das Memoryland generieren ...
+          Token neu generieren...
         </button>
       </div>
       <div>

@@ -54,7 +54,6 @@ export class AppComponent implements OnInit{
     ).subscribe(_ => {
         set(model => {
           model.token = "";
-          model.publicToken = "";
         });
       }
     )

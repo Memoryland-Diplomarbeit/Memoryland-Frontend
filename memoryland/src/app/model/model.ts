@@ -25,7 +25,6 @@ export interface Model {
   originalMemorylandConfigs: MemorylandConfig[];
   memorylandConfigs: MemorylandConfig[];
   token: string;
-  publicToken: string;
   renameMemoryland: RenameModel<Memoryland>;
   renamePhoto: RenameModel<Photo>;
   renamePhotoAlbum: RenameModel<PhotoAlbum>;
@@ -67,7 +66,6 @@ const initialState: Model = {
   memorylandConfigs: [],
   originalMemorylandConfigs: [],
   token: "",
-  publicToken: "",
   renameMemoryland: {
     renameObj: undefined,
     name: ""

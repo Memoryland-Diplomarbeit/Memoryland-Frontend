@@ -44,22 +44,28 @@ export class WebapiService {
               (a,b) =>
                 a.name.localeCompare(b.name));
 
-            if (model.selectedPhotoAlbum !== undefined) {
-              model.selectedPhotoAlbum = photoAlbums
-                .filter(pa =>
-                  pa.id === model.selectedPhotoAlbum!.id)[0];
-            } else if (model.photoAlbums.length > 0) {
-              model.selectedPhotoAlbum = model.photoAlbums[0];
-            }
+            if (model.photoAlbums.length > 0) {
+              if (model.selectedPhotoAlbum !== undefined) {
+                let filteredAlbums = photoAlbums
+                  .filter(pa =>
+                    pa.id === model.selectedPhotoAlbum!.id);
 
-            if (model.uploadPhotoModel.selectedAlbumId === undefined) {
-              model.uploadPhotoModel.selectedAlbumId = model
-                .photoAlbums[0].id;
-            }
+                if (filteredAlbums.length > 0) {
+                  model.selectedPhotoAlbum = filteredAlbums[0];
+                }
+              } else {
+                model.selectedPhotoAlbum = model.photoAlbums[0];
+              }
 
-            if (model.uploadAlbumModel.selectedAlbumId === undefined) {
-              model.uploadAlbumModel.selectedAlbumId = model
-                .photoAlbums[0].id;
+              if (model.uploadPhotoModel.selectedAlbumId === undefined) {
+                model.uploadPhotoModel.selectedAlbumId = model
+                  .photoAlbums[0].id;
+              }
+
+              if (model.uploadAlbumModel.selectedAlbumId === undefined) {
+                model.uploadAlbumModel.selectedAlbumId = model
+                  .photoAlbums[0].id;
+              }
             }
 
             model.loadingAlbums = false;
@@ -233,24 +239,6 @@ export class WebapiService {
             'error'
           );
         },
-      });
-  }
-
-  public getToken(memorylandId: number, isPublic:boolean = false){
-    this.httpClient.get<{ "token":string; "isPublic":boolean }>(
-      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}/token/${isPublic}`,
-      {headers: this.headers})
-      .subscribe({
-        "next": (tokenDto) => {
-          set((model) => {
-            if (tokenDto.isPublic) {
-              model.publicToken = tokenDto.token;
-            } else {
-              model.token = tokenDto.token;
-            }
-          });
-        },
-        "error": (err) => console.error(err),
       });
   }
 
@@ -454,5 +442,45 @@ export class WebapiService {
         );
       },
     });
+  }
+
+  public getToken(memorylandId: number){
+    this.httpClient.get<{ "token":string; }>(
+      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}/token/`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (tokenDto) => {
+          set((model) => {
+            model.token = tokenDto.token;
+          });
+        },
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim holen eines Tokens!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public generateNewPublicToken(memorylandId: number) {
+    this.httpClient.post<{ "token":string; }>(
+      `${environment.apiConfig.uri}/api/Memoryland/${memorylandId}/token/`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (tokenDto) => {
+          set((model) => {
+            model.token = tokenDto.token;
+          });
+        },
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim generieren eines neuen Tokens!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
   }
 }
