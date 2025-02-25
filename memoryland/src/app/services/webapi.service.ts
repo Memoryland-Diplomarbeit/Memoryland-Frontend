@@ -437,6 +437,7 @@ export class WebapiService {
         {headers: this.headers}
       ).subscribe({
       "next": () => {
+        this.getTransaction();
         if (func !== undefined)
           func();
       },
