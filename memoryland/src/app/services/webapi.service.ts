@@ -52,6 +52,8 @@ export class WebapiService {
 
                 if (filteredAlbums.length > 0) {
                   model.selectedPhotoAlbum = filteredAlbums[0];
+                } else {
+                  model.selectedPhotoAlbum = undefined;
                 }
               } else {
                 model.selectedPhotoAlbum = model.photoAlbums[0];
@@ -66,6 +68,10 @@ export class WebapiService {
                 model.uploadAlbumModel.selectedAlbumId = model
                   .photoAlbums[0].id;
               }
+            } else {
+              model.selectedPhotoAlbum = undefined;
+              model.uploadPhotoModel.selectedAlbumId = undefined;
+              model.uploadAlbumModel.selectedAlbumId = undefined;
             }
 
             model.loadingAlbums = false;
