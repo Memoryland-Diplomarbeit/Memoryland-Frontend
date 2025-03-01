@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {Memoryland, MemorylandConfig, Photo, set, store} from '../../../model';
 import {FormsModule} from '@angular/forms';
-import {distinctUntilChanged, generate, map} from 'rxjs';
+import {debounceTime, distinctUntilChanged, generate, map} from 'rxjs';
+import {WebapiService} from '../../../services/webapi.service';
 
 @Component({
   selector: 'app-edit-memoryland-config',
@@ -12,6 +13,7 @@ import {distinctUntilChanged, generate, map} from 'rxjs';
   styleUrl: './edit-memoryland-config.component.scss'
 })
 export class EditMemorylandConfigComponent implements OnInit {
+  private webApi = inject(WebapiService);
   @Input() selectedMemoryland: Memoryland | undefined;
   @Input() memorylandConfigs: MemorylandConfig[] = [];
 
@@ -47,6 +49,19 @@ export class EditMemorylandConfigComponent implements OnInit {
       .photoAlbums
       .find(a => a.id === Number.parseInt(this.selectedPhotoAlbumId));
     this.selectedPhotos = selectedAlbum ? selectedAlbum.photos : [];
+
+    if (selectedAlbum !== undefined) {
+      let images = selectedAlbum.photos;
+
+      let filteredImages = images
+        .filter(image => image.image === undefined);
+
+      if (filteredImages.length > 0) {
+        this.webApi.generatePreviewsByAlbum(
+          selectedAlbum.id
+        );
+      }
+    }
   }
 
   onDragStart(event: DragEvent, photo: Photo) {

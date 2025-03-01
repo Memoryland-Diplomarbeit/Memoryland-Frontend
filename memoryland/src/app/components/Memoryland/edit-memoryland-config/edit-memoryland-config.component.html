@@ -39,7 +39,14 @@
                 class="col-3 p-1 border d-flex justify-content-center align-items-center img-box word-break"
                 draggable="true"
                 (dragstart)="onDragStart($event, photo)">
-                {{ photo.name }}
+                @if (photo.image !== undefined) {
+                  <img
+                    class="img-fluid"
+                    [src]="photo.image"
+                    [alt]="photo.name">
+                } @else {
+                  {{ photo.name }}
+                }
               </div>
             }
           } @else {
@@ -64,12 +71,20 @@
                   Pos {{slot}}
                 </div>
               } @else {
-                <p
+                <div
                   class="text-center d-flex justify-content-center align-items-center h-100"
                   draggable="true"
                   (dragstart)="onDragStartConf($event, getConfigForPos(slot))">
-                  {{getConfigForPos(slot)!.photo.name}}
-                </p>
+                  @if (getConfigForPos(slot)!.photo.image !== undefined) {
+                    <img
+                      class="img-fluid"
+                      [src]="getConfigForPos(slot)!.photo.image"
+                      [alt]="getConfigForPos(slot)!.photo.name">
+                  } @else {
+                    {{getConfigForPos(slot)!.photo.name}}
+                  }
+                </div>
+
               }
             </div>
           }

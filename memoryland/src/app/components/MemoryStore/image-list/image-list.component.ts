@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {Memoryland, Photo, set, store} from '../../../model';
-import {distinctUntilChanged, map} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs';
 import {AsyncPipe} from '@angular/common';
 import {HoverClassDirective} from '../../../directives/hover-class.directive';
 import {WebapiService} from '../../../services/webapi.service';
@@ -15,6 +15,28 @@ import {WebapiService} from '../../../services/webapi.service';
   styleUrl: './image-list.component.scss'
 })
 export class ImageListComponent {
+  constructor() {
+    store.pipe(
+      map(model =>
+        model.selectedPhotoAlbum?.photos
+          .filter(photo => photo.name
+            .includes(model.searchImgList))),
+      distinctUntilChanged(),
+      debounceTime(5000)
+    ).subscribe(images => {
+      if (images && store.value.selectedPhotoAlbum !== undefined) {
+        let filteredImages = images
+          .filter(image => image.image === undefined);
+
+        if (filteredImages.length > 0) {
+          this.webApi.generatePreviewsByAlbum(
+            store.value.selectedPhotoAlbum.id
+          );
+        }
+      }
+    });
+  }
+
   protected images = store.pipe(
     map(model =>
       model.selectedPhotoAlbum?.photos

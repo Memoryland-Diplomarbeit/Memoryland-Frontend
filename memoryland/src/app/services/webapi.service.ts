@@ -14,11 +14,13 @@ import { environment } from '../../environments/environment';
 import {set} from '../model';
 import {Observable} from 'rxjs';
 import {ToastService} from './toast.service';
+import {ImageCropperService} from './image-cropper.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebapiService {
+  private previewSvc = inject(ImageCropperService);
   private httpClient = inject(HttpClient);
   private toastSvc = inject(ToastService);
   private headers: HttpHeaders = new HttpHeaders()
@@ -214,6 +216,28 @@ export class WebapiService {
             model.memorylandConfigs = structuredClone(configs)
               .sort((a,b) =>
                 (a.position > b.position ? 1 : -1));
+
+            for (let i = 0; i < model.memorylandConfigs.length; i++) {
+              let photo = model.photoAlbums
+                .flatMap(album => album.photos)
+                .find(p => p.id === model.memorylandConfigs[i].photo.id);
+
+              if (photo) {
+                model.memorylandConfigs[i].photo.image = photo.image;
+
+                if (photo.image === undefined) {
+                  let albumId = model.photoAlbums
+                    .find(pa => pa.photos
+                        .findIndex(p => p.id === photo.id)
+                      !== -1)?.id;
+
+                  if (albumId) {
+                    this.generatePreviewsByAlbum(albumId);
+                  }
+                }
+              }
+            }
+
             model.originalMemorylandConfigs = structuredClone(model.memorylandConfigs);
           });
         },
@@ -484,6 +508,60 @@ export class WebapiService {
         "error": (err) => {
           this.toastSvc.addToast(
             'Fehler beim generieren eines neuen Tokens!',
+            err.message + ":\n" + err.error,
+            'error'
+          );
+        },
+      });
+  }
+
+  public generatePreviewsByAlbum(albumId: number) {
+    this.httpClient.get<SelectedPhoto[]>(
+      `${environment.apiConfig.uri}/api/PhotoAlbum/${albumId}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (photos) => {
+          set((model) => {
+            let index = model.photoAlbums
+              .findIndex(album =>
+                album.id === albumId);
+
+
+            if (index !== -1) {
+              photos.forEach((photo) => {
+                let photoIndex = model.photoAlbums[index].photos
+                  .findIndex(p =>
+                    p.name === photo.name);
+
+                if (photoIndex !== -1) {
+                  let splitName = photo.name.split(".");
+                  let isJpg = splitName[splitName.length - 1] === "jpg";
+
+                  this.previewSvc.createImagePreview(photo.photo, isJpg)
+                    .then((image) => {
+                      set(m => {
+                        m.photoAlbums[index].photos[photoIndex].image = image;
+
+                        if (m.selectedPhotoAlbum !== undefined) {
+                          m.selectedPhotoAlbum.photos = m.photoAlbums[index].photos;
+                        }
+
+                        for (let i = 0; i < m.memorylandConfigs.length; i++) {
+                          if (m.memorylandConfigs[i].photo.id === m.photoAlbums[index]
+                            .photos[photoIndex].id) {
+                            m.memorylandConfigs[i].photo.image = image;
+                          }
+                        }
+                      })
+                    });
+                }
+              });
+            }
+          });
+        },
+        "error": (err) => {
+          this.toastSvc.addToast(
+            'Fehler beim abrufen des Fotos!',
             err.message + ":\n" + err.error,
             'error'
           );
