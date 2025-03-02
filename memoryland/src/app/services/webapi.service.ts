@@ -424,7 +424,7 @@ export class WebapiService {
     }
   }
 
-  public getTransaction() {
+  public getTransaction(func: () => void = () => {}) {
     this.httpClient.get<Transaction[]>(
       `${environment.apiConfig.uri}/api/Upload/transaction`,
       {headers: this.headers})
@@ -439,10 +439,11 @@ export class WebapiService {
               model.transaction = undefined;
             });
           }
+          func();
         },
         "error": (err) => {
           this.toastSvc.addToast(
-            'Fehler beim abrufen des Resumable-Uploads!',
+            'Fehler beim abrufen der Transaktion!',
             err.message + ":\n" + err.error,
             'error'
           );
@@ -461,13 +462,11 @@ export class WebapiService {
         {headers: this.headers}
       ).subscribe({
       "next": () => {
-        this.getTransaction();
-        if (func !== undefined)
-          func();
+        this.getTransaction(func)
       },
       "error": (err) => {
         this.toastSvc.addToast(
-          'Fehler beim speichern des Resumable Uploads!',
+          'Fehler beim speichern der Transaktion!',
           err.message + ":\n" + err.error,
           'error'
         );

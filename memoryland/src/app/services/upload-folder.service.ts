@@ -29,7 +29,7 @@ export class UploadFolderService {
       model.finishedPhotos = 0;
     });
 
-    if (store.value.uploadAlbumModel.useTransaction && !store.value.useResumableUpload) {
+    if (store.value.uploadAlbumModel.useTransaction && !store.value.useTransaction) {
       this.webApi.postTransaction(() => {
         this.uploadAlbum().then(() => {
           this.finishUploadAlbum();
@@ -47,7 +47,7 @@ export class UploadFolderService {
     this.webApi.removeTransaction();
 
     set(model => {
-      model.useResumableUpload = false;
+      model.useTransaction = false;
       model.uploadAlbumModel.useTransaction = false;
     });
   }

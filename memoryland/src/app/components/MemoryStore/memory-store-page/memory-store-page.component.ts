@@ -53,7 +53,7 @@ export class MemoryStorePageComponent implements OnInit{
   ngOnInit() {
     if (store.value.transaction !== undefined) {
       this.toastSvc.addToast(
-        'Ein Resumable-Upload ist vorhanden!',
+        'Eine Upload kann fortgesetzt werden!',
         `Der letzte Upload des Albums ${store.value.transaction.destAlbum.name} kann fortgesetzt werden.`,
         'info'
       );
@@ -133,10 +133,10 @@ export class MemoryStorePageComponent implements OnInit{
       100 * 100)/100;
   }
 
-  setResumableUpload() {
+  setTransaction() {
     set(model => {
       model.uploadAlbumModel.useTransaction = true;
-      model.useResumableUpload = true;
+      model.useTransaction = true;
       model.uploadAlbumModel.selectedAlbumId = model.transaction!.destAlbum.id;
     });
   }

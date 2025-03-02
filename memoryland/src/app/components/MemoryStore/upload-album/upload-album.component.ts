@@ -29,14 +29,14 @@ export class UploadAlbumComponent implements OnInit {
           pa.id === store.value.uploadAlbumModel.selectedAlbumId)),
       distinctUntilChanged()
     );
-  protected readonly useResumableUpload = store
+  protected readonly useTransaction = store
     .pipe(
       map(model => model.uploadAlbumModel.useTransaction),
       distinctUntilChanged()
     );
-  protected readonly isResumableUpload = store
+  protected readonly isTransaction = store
     .pipe(
-      map(model => model.useResumableUpload),
+      map(model => model.useTransaction),
       distinctUntilChanged()
     );
 
@@ -127,12 +127,8 @@ export class UploadAlbumComponent implements OnInit {
   protected readonly store = store;
 
   unsetUseTransaction() {
-    this.setUseTransaction(false);
-  }
-
-  unsetUseResumableUpload() {
     set(model => {
-      model.useResumableUpload = false;
+      model.useTransaction = false;
     });
   }
 }

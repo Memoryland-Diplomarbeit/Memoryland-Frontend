@@ -5,7 +5,7 @@
     class="btn-close"
     data-bs-dismiss="modal"
     aria-label="Close"
-    (click)="unsetUseResumableUpload()">
+    (click)="unsetUseTransaction()">
   </button>
 </div>
 
@@ -20,7 +20,7 @@
               name="selectedAlbum"
               required
               [selectedIndex]="(uploadPhotoPhotoAlbumIndex | async)"
-              [disabled]="(isResumableUpload | async)">
+              [disabled]="(isTransaction | async)">
         @for (pa of (photoAlbums | async); track pa.id) {
           <option [value]="pa.id">{{ pa.name }}</option>
         }
@@ -51,7 +51,7 @@
 
     <!-- use transaction input -->
     <div class="mb-2">
-      @if (!(useResumableUpload | async) && store.value.transaction !== undefined && !(isResumableUpload | async)) {
+      @if (!(useTransaction | async) && store.value.transaction !== undefined && !(isTransaction | async)) {
         <div
           class="form-check"
           type="button"
@@ -61,10 +61,10 @@
           <input
             class="form-check-input unclickable"
             type="checkbox"
-            [checked]="(useResumableUpload | async)"
+            [checked]="(useTransaction | async)"
             id="flexCheckDefault">
           <label class="form-check-label unclickable" for="flexCheckDefault">
-            Resumable Uploads ermöglichen
+            'Resume Upload' ermöglichen
           </label>
         </div>
       } @else {
@@ -73,12 +73,12 @@
             #checkBoxInput
             class="form-check-input"
             type="checkbox"
-            [checked]="(useResumableUpload | async)"
+            [checked]="(useTransaction | async)"
             (change)="setUseTransaction(checkBoxInput.checked)"
             id="flexCheckDefault2"
-            [disabled]="(isResumableUpload | async)">
+            [disabled]="(isTransaction | async)">
           <label class="form-check-label" for="flexCheckDefault2">
-            Resumable Uploads ermöglichen
+            'Resume-Upload' ermöglichen
           </label>
         </div>
       }
@@ -90,7 +90,7 @@
       type="button"
       class="btn btn-secondary"
       data-bs-dismiss="modal"
-      (click)="unsetUseResumableUpload()">
+      (click)="unsetUseTransaction()">
       Cancel
     </button>
 

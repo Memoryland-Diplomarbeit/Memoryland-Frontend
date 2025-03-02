@@ -195,7 +195,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5">Es ist bereits ein Resumable Upload offen!</h1>
+        <h1 class="modal-title fs-5">Es ist bereits eine Transaktion offen!</h1>
       </div>
 
       <div class="modal-body">
@@ -293,7 +293,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5">Resumable Upload fortfahren</h1>
+        <h1 class="modal-title fs-5">Upload fortfahren</h1>
       </div>
 
       <div class="modal-body">
@@ -308,11 +308,11 @@
         </button>
 
         <button
-          (click)="setResumableUpload()"
+          (click)="setTransaction()"
           class="btn btn-success"
           data-bs-dismiss="modal"
           data-bs-toggle="modal"
-          data-bs-target="#upload-photoAlbum-modal-resumable">
+          data-bs-target="#upload-photoAlbum-modal-with-transaction">
           Fortfahren
         </button>
       </div>
@@ -322,7 +322,7 @@
 
 <div
   class="modal fade"
-  id="upload-photoAlbum-modal-resumable"
+  id="upload-photoAlbum-modal-with-transaction"
   tabindex="-1"
   aria-hidden="true"
   data-bs-backdrop="static"

@@ -37,13 +37,13 @@ export interface Model {
   transaction: Transaction | undefined;
   totalPhotos: number;
   finishedPhotos: number;
-  useResumableUpload: boolean;
+  useTransaction: boolean;
   loadingMemorylands: boolean;
   loadingAlbums: boolean;
 }
 
 const initialState: Model = {
-  useResumableUpload: false,
+  useTransaction: false,
   finishedPhotos: 0,
   totalPhotos: 0,
   selectedMemoryland: undefined,
